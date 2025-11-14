@@ -1,9 +1,6 @@
 -- ~/.config/nvim/lua/diagnostics.lua
 
--- Загружаем и настраиваем lsp_lines
-require("lsp_lines").setup()
-
--- Иконки для диагностики
+-- Иконки и цвета
 local severity_icons = {
   [vim.diagnostic.severity.ERROR] = "",
   [vim.diagnostic.severity.WARN]  = "",
@@ -11,13 +8,56 @@ local severity_icons = {
   [vim.diagnostic.severity.HINT]  = ""
 }
 
--- Единая конфигурация диагностики
--- ВАЖНО: virtual_text = false — обязательно для работы lsp_lines
+-- Цвета из gruvbox-material (medium dark)
+-- Подходит для большинства случаев; измените, если используете soft/hard
+local colors = {
+  lightRed    = "#ff9966",
+  red    = "#ea6962",
+  yellow = "#d8a657",
+  blue   = "#7daea3",
+  green  = "#a9b665",
+}
+
+local function set_diagnostic_highlights()
+  -- Текст ошибок
+  vim.api.nvim_set_hl(0, "DiagnosticError", { fg = colors.red,    bold = true })
+  vim.api.nvim_set_hl(0, "DiagnosticWarn",  { fg = colors.yellow, bold = true })
+  vim.api.nvim_set_hl(0, "DiagnosticInfo",  { fg = colors.blue })
+  vim.api.nvim_set_hl(0, "DiagnosticHint",  { fg = colors.green })
+
+  -- 🔥 ЗАМЕНА: используем underline + fg вместо undercurl + sp
+  vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { underline = true, fg = colors.lightRed })
+  vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn",  { underline = true, fg = colors.yellow })
+  vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo",  { underline = true, fg = colors.blue })
+  vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint",  { underline = true, fg = colors.green })
+
+  -- Знаки в signcolumn
+  vim.api.nvim_set_hl(0, "DiagnosticSignError", { fg = colors.red,    bold = true })
+  vim.api.nvim_set_hl(0, "DiagnosticSignWarn",  { fg = colors.yellow, bold = true })
+  vim.api.nvim_set_hl(0, "DiagnosticSignInfo",  { fg = colors.blue })
+  vim.api.nvim_set_hl(0, "DiagnosticSignHint",  { fg = colors.green })
+end
+
+-- Применяем после загрузки темы (и сразу)
+vim.api.nvim_create_autocmd("ColorScheme", { callback = set_diagnostic_highlights })
+set_diagnostic_highlights()
+
+-- Регистрация знаков с иконками
+for severity, icon in pairs(severity_icons) do
+  vim.fn.sign_define("DiagnosticSign" .. vim.diagnostic.severity[severity]:gsub("^%l", string.upper), {
+    text = icon,
+    texthl = "DiagnosticSign" .. vim.diagnostic.severity[severity]:gsub("^%l", string.upper),
+    linehl = "",
+    numhl = "",
+  })
+end
+
+-- Основная конфигурация диагностики (БЕЗ virtual_text!)
 vim.diagnostic.config({
-  virtual_text = false,
-  signs = true,
+  virtual_text = false,        -- ✅ отключено
+  signs = true,                -- ✅ знаки включены
+  underline = true,            -- ✅ подчёркивание включено
   update_in_insert = false,
-  underline = true,
   severity_sort = true,
   float = {
     focusable = false,
@@ -27,54 +67,45 @@ vim.diagnostic.config({
     header = "",
     prefix = "",
   },
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = severity_icons[vim.diagnostic.severity.ERROR],
-      [vim.diagnostic.severity.WARN]  = severity_icons[vim.diagnostic.severity.WARN],
-      [vim.diagnostic.severity.INFO]  = severity_icons[vim.diagnostic.severity.INFO],
-      [vim.diagnostic.severity.HINT]  = severity_icons[vim.diagnostic.severity.HINT],
-    },
-  },
 })
 
--- Глобальное состояние для переключения между lsp_lines и virtual_text
-local lsp_lines_enabled = true
+-- === УПРАВЛЕНИЕ LSP_LINES ===
+-- Загружаем lsp_lines, но НЕ включаем сразу
+require("lsp_lines").setup()
 
+-- Флаг: изначально ВЫКЛЮЧЕН
+_G.lsp_lines_enabled = false
+
+-- Функция переключения
 local function toggle_lsp_lines()
-  lsp_lines_enabled = not lsp_lines_enabled
-
-  if lsp_lines_enabled then
-    -- Включаем lsp_lines → отключаем virtual_text
-    vim.diagnostic.config({ virtual_text = false })
-    require("lsp_lines").toggle()
-  else
-    -- Включаем virtual_text → отключаем lsp_lines
-    vim.diagnostic.config({
-      virtual_text = {
-        prefix = function(diagnostic)
-          return severity_icons[diagnostic.severity] or "●"
-        end,
-      },
-    })
-    require("lsp_lines").toggle()
-  end
-
-  vim.notify("Diagnostics: " .. (lsp_lines_enabled and "lines" or "virtual_text"))
+  _G.lsp_lines_enabled = not _G.lsp_lines_enabled
+  require("lsp_lines").toggle()
+  vim.notify("lsp_lines: " .. (_G.lsp_lines_enabled and "ON" or "OFF"), _G.lsp_lines_enabled and vim.log.levels.INFO or vim.log.levels.WARN)
 end
 
--- Клавиша для переключения режимов
-vim.keymap.set("n", "<leader>dl", toggle_lsp_lines, { desc = "Toggle diagnostics lines/text" })
+vim.keymap.set("n", "<leader>dl", toggle_lsp_lines, { desc = "Toggle lsp_lines" })
 
--- Глобальный тумблер показа/скрытия всех диагностик
-local diagnostics_visible = true
-vim.keymap.set("n", "<leader>df", function()
-  diagnostics_visible = not diagnostics_visible
-  if diagnostics_visible then
-    vim.diagnostic.show()
-  else
-    vim.diagnostic.hide()
-  end
-  vim.notify("Diagnostics: " .. (diagnostics_visible and "shown" or "hidden"))
-end, { desc = "Toggle diagnostics visibility" })
+-- === POPUP ПО НАВЕДЕНИЮ ===
+-- Показываем диагностическое окно при удержании курсора
+vim.api.nvim_create_autocmd("CursorHold", {
+  group = vim.api.nvim_create_augroup("DiagnosticsPopup", { clear = true }),
+  callback = function()
+    local opts = {
+      focus = false,
+      scope = "cursor",
+      close_events = { "CursorMoved", "InsertEnter", "BufHidden" },
+    }
+    vim.diagnostic.open_float(nil, opts)
+  end,
+})
 
-require("lsp_lines").toggle()  -- ← включить lsp_lines сразу
+-- === ДОП: полный список ошибок по хоткею (опционально) ===
+vim.keymap.set("n", "<leader>dd", function()
+  vim.diagnostic.open_float()
+end, { desc = "Show diagnostics at cursor" })
+
+vim.keymap.set("n", "<leader>de", function()
+  vim.diagnostic.setloclist()
+end, { desc = "Open diagnostics in loclist" })
+
+vim.o.updatetime = 300  -- 300 мс → popup появляется быстро

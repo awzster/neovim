@@ -16,7 +16,7 @@
   },
   "then": {
     "prefix": ".then",
-    "body": [".then((${1:data} => {", "\n\t$2", "});"],
+    "body": [".then( (${1:data}) => {", "\t$2", "});"],
     "description": ".then()"
   },
   "map": {
