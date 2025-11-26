@@ -140,7 +140,7 @@
   },
   "try-catch": {
     "prefix": "try",
-    "body": ["try", "{", "\t$TM_SELECTED_TEXT", "}", "catch (e) {", "console.log($0);", "}"],
+    "body": ["try", "{", "\t$TM_SELECTED_TEXT", "}", "catch (e) {", "console.warn(`Error in $0:`, e);", "}"],
     "description": "Wrap selection in try-catch"
   },
   "assign": {

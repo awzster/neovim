@@ -32,13 +32,39 @@ require("lazy").setup({
     priority = 1000,
     config = function()
       --vim.g.gruvbox_material_background = "medium" -- или "hard", "soft"
+      vim.g.gruvbox_material_background = 'medium' -- Максимальный контраст
+      vim.g.gruvbox_material_better_performance = 1
       vim.cmd("colorscheme gruvbox-material")
+      vim.g.gruvbox_material_enable_bold = 1
 
       -- Сразу задаём PmenuSel
       vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#ff0000", bold = true })
     end,
   },
   { "tanvirtin/monokai.nvim", lazy = true, priority = 1000 },
+
+  {
+    "stevearc/aerial.nvim",
+    lazy = false,            -- Снять ленивую загрузку
+    priority = 1000,         -- Высокий приоритет загрузки
+    opts = {},
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+      -- Убедитесь, что Telescope указан как зависимость (если нет в другом месте)
+      "nvim-telescope/telescope.nvim" 
+    },
+    config = function()
+      require("aerial").setup({
+        -- ... ваши настройки ...
+      })
+
+      -- Это нужно, даже если вы добавили в ui.lua, для гарантии
+      require("telescope").load_extension("aerial") 
+
+      vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
+    end
+  },
 
   -- UI
   { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
@@ -111,5 +137,6 @@ require("lazy").setup({
       require("Comment").setup(opts)
     end,
   },
+
 })
 

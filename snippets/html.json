@@ -78,6 +78,7 @@
       "<select",
       "  class=\"form-control\"",
       "  ng-model=\"vm.$1\"",
+      "  name=\"$1\"",
       "  ng-options=\"el.name for el in vm.$2List track by el.id\">",
       "  <option value=\"\"></option>",
       "</select>"
@@ -86,7 +87,7 @@
   },
   "ng-input": {
     "prefix": "ng-input",
-    "body": "<input class=\"form-control\" type=\"search\" ng-model=\"$1\"/>",
+    "body": "<input class=\"form-control\" type=\"search\" ng-model=\"vm.$1\" name=\"$1\"/>",
     "description": "Search input"
   },
   "button": {

@@ -3,10 +3,9 @@
 local npairs = require("nvim-autopairs")
 local Rule = require("nvim-autopairs.rule")
 
--- Уведомление о загрузке (до setup)
-print("🔍 autopairs.lua загружен!")
-
 npairs.setup({
+  fast_wrap = false,
+  disable_when_touch = true,
   check_ts = true,
   ts_config = {
     -- Только комментарии блокируют автопары, строки — нет

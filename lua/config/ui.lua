@@ -69,6 +69,8 @@ telescope.setup({
     path_display = { "truncate" },
   },
 })
+
+require("telescope").load_extension("aerial")
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
 vim.keymap.set("n", "<leader>fg", builtin.live_grep,  { desc = "Live grep" })
@@ -79,6 +81,10 @@ end, { desc = "Document Symbols" })
 vim.keymap.set('n', '<leader>fs', function()
   require('telescope.builtin').grep_string({ search = vim.fn.expand('<cword>') })
 end, { desc = 'Grep word under cursor' })
+
+vim.keymap.set("n", "<leader>sa", function()
+    require("telescope").extensions.aerial.aerial()
+end, { desc = "Search Symbols (Aerial)" })
 
 -- Переключение на N-й буфер в списке (1–9) по <Leader> + цифра
 for i = 1, 9 do
