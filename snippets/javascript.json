@@ -31,17 +31,17 @@
   },
   "filter": {
     "prefix": ".filter",
-    "body": ".filter(el => { return el.id == $1; });",
+    "body": ".filter(el => el.id == $1);",
     "description": ".filter()"
   },
   "find": {
     "prefix": ".find",
-    "body": ".find(el => { return el.id == $1; });",
+    "body": ".find(el => el.id == $1);",
     "description": ".find()"
   },
   "some": {
     "prefix": ".some",
-    "body": ".some(el => { return el.id == $1; });",
+    "body": ".some(el => el.id == $1);",
     "description": ".some()"
   },
 
