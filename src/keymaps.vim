@@ -52,6 +52,9 @@ nnoremap <expr> <leader>p '`[' . strpart(getregtype(), 0, 1) . '`]'
 " Быстрое удаление без копирования
 nnoremap s "_d
 nnoremap ss "_dd
+" Быстрое удаление символа без копирования
+nnoremap x "_x
+nnoremap X "_X
 
 nmap <F4> :e ~/.vimrc<cr>
 nmap <F2> bve

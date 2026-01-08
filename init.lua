@@ -16,6 +16,8 @@ require("config.conform")            -- форматирование eslint_d / 
 require("config.diagnostics")        -- lsp_lines и переключатели
 require("config.persistence")        -- mkview/loadview + lastpos
 require("config.filetypes")          -- xsl → xml
+require("config.codecompanion")
+require("config.codecompanion_keymaps")
 
 -- 3) .vim-подключения (как у тебя было)
 vim.cmd("source ~/.config/nvim/src/functions.vim")

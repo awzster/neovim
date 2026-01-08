@@ -84,9 +84,10 @@
   "$watch": {
     "prefix": "watch",
     "body": [
-      "scope.$watch(function(scope) {return scope.${1:value}}, function(newVal, oldVal) {",
-      "  if (newVal)",
-      "  scope.${1:value} = newVal;",
+      "$scope.$watch((scope) => scope.vm.mode, (newVal, oldVal) =>",
+      "{",
+      "  if (newVal != oldVal)",
+      "    // make smth",
       "});"
     ],
     "description": "scope.$watch"
@@ -97,6 +98,7 @@
       "return new swal({",
       "  title: 'Confirmarion',",
       "  text: 'Are you sure to $1?',",
+      "  heightAuto: false,",
       "  icon: 'question',",
       "  showCancelButton: true,",
       "  confirmButtonText: 'OK',",
@@ -125,6 +127,7 @@
       "return new swal({",
       "  title: 'Clone program',",
       "  input: 'text',",
+      "  heightAuto: false,",
       "  inputLabel: 'Program name',",
       "  icon: 'question',",
       "  showCancelButton: true,",
@@ -140,7 +143,7 @@
   },
   "try-catch": {
     "prefix": "try",
-    "body": ["try", "{", "\t$TM_SELECTED_TEXT", "}", "catch (e) {", "console.warn(`Error in $0:`, e);", "}"],
+    "body": ["try", "{", "\t${TM_SELECTED_TEXT}", "}", "catch (e) {", "console.warn(`Error in $0:`, e);", "}"],
     "description": "Wrap selection in try-catch"
   },
   "assign": {
@@ -172,7 +175,7 @@
       "const $1 = ({ data, value }) =>",
       "{",
       "  return data && !data.isTotal ?",
-      "  `<a href='javascript:void(0)' ng-click='vm.$2(\\${data.pos})'>\\${value}</a>` : value;",
+      "  `<a href='javascript:void(0)' ng-click=\"vm.$2(\\${data.pos})\">\\${value}</a>` : value;",
       "}"
     ],
     "description": "AG-Grid cell renderer with ng-click"
@@ -184,7 +187,7 @@
       "const $1 = ({ data, value }) =>",
       "{",
       "  return data && !data.isTotal ?",
-      "  `<a href='$2' target='_blank'>\\${value}</a>` : value;",
+      "  `<a href=\"$2\" target=\"_blank\">\\${value}</a>` : value;",
       "}"
     ],
     "description": "AG-Grid cell renderer with href"

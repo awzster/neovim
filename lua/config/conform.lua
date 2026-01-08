@@ -42,7 +42,7 @@ conform.setup({
 })
 
 -- Создаем пользовательскую команду
-vim.api.nvim_create_user_command("ConformToggleFormatOnSave", toggle_format_on_save, {})
+vim.api.nvim_create_user_command("FormatOnSaveToggle", toggle_format_on_save, {})
 
 -- === ВАЖНО: создаём команду :Format ===
 vim.api.nvim_create_user_command("Format", function(args)

@@ -22,7 +22,7 @@ require('lualine').setup({
      {
        'buffers',
        mode = 2,
-       max_length = 140,
+       max_length = 190,
        show_buffer_close_icons = false,
        show_filename_only = true,
        show_modified_status = true, -- Shows indicator when the buffer is modified.
