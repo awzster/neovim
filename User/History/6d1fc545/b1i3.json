@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "merge-current-file",
+      "type": "shell",
+      "command": "/home/za/usr/bin/copy2dev_vscode.sh",
+      "args": ["${file}"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared",
+        "focus": false
+      }
+    }
+  ]
+}

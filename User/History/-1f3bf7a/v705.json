@@ -1,0 +1,78 @@
+
+[
+  {
+    "key": "ctrl+z",
+    "command": "undo",
+    "when": "editorTextFocus && neovim.active"
+  },
+  {
+    "key": "ctrl+r",
+    "command": "redo",
+    "when": "editorTextFocus && neovim.active"
+  },
+  {
+    "key": "ctrl+r",
+    "command": "redo",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "\\ 1",
+    "command": "workbench.action.openEditorAtIndex1",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "\\ 2",
+    "command": "workbench.action.openEditorAtIndex2",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "\\ 3",
+    "command": "workbench.action.openEditorAtIndex3",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "\\ 4",
+    "command": "workbench.action.openEditorAtIndex4",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "\\ 5",
+    "command": "workbench.action.openEditorAtIndex5",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "\\ 6",
+    "command": "workbench.action.openEditorAtIndex6",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "\\ 7",
+    "command": "workbench.action.openEditorAtIndex7",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "\\ 8",
+    "command": "workbench.action.openEditorAtIndex8",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "\\ 9",
+    "command": "workbench.action.openEditorAtIndex9",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "shift+left",
+    "command": "workbench.action.previousEditor",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "shift+right",
+    "command": "workbench.action.nextEditor",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "F12",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "editorTextFocus"
+  }
+]

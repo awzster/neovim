@@ -1,0 +1,91 @@
+<div>
+
+  <modal-dialog show="vm.nodeDlgShow" dialog-title="Add / Edit Node" ng-modal-class="ng-modal-small" ng-cloak>
+    <form name="vm.nodeForm" ng-submit="vm.submit()">
+      <div class="panel-sm panel-default lg-1 panel-grid">
+        <div class="panel-body">
+
+          <div class="row h-2-2">
+            <div class="l-15 col-xs-16"><label>Name:</label></div>
+            <div class="l-15 col-xs-16">
+              <input class="form-control" type="text" ng-model="vm.node.name" name="node_name" focus-on="vm.nodeDlgShow" required/>
+            </div>
+          </div>
+          <div class="row h-2-2">
+            <div class="l-15 col-xs-16">
+              <label>The Node can has products</label>&nbsp;
+              <input type="checkbox" ng-model="vm.node.has_products" ng-true-value="'1'" ng-false-value="'0'" ng-disabled="vm.node.can_change_type != '1'"/>
+            </div>
+          </div>
+
+        </div>
+        <div class="panel-footer text-right">
+          <button class="btn btn-primary" type="submit">Save</button>
+          <button class="btn btn-default" ng-click="vm.nodeDlgShow = false" type="button">Close</button>
+        </div>
+      </div>
+    </form>
+  </modal-dialog>
+
+  <modal-dialog show="vm.moveDlgShow" dialog-title="Move Node to other" ng-modal-class="ng-modal-md" ng-cloak>
+    <form name="vm.moveForm" ng-submit="vm.moveSubmit()">
+      <div class="panel-sm panel-default panel-grid">
+        <div class="panel-heading">
+          <p>
+            <span class="text-muted">Node to move</span>
+            <span class="l-5 lg-2">{{vm.node.name}}</span>
+          </p>
+        </div>
+        <div class="panel-body">
+
+          <div class="row h-2-2">
+              <div class="l-15 col-xs-16"><label>Move Node to:</label></div>
+              <div class="l-15 col-xs-16">
+                <ui-select
+                  ng-model="vm.targetNode"
+                  append-to-body="true"
+                  theme="select2"
+                  ng-required="true"
+                  style="width: 100%;">
+                  <ui-select-match allow-clear="true" placeholder="Select the terget node">
+                    <span ng-bind="$select.selected.name"></span>
+                  </ui-select-match>
+                  <ui-select-choices repeat="el in ( vm.nodeList | filter: $select.search ) | limitTo:150 track by el.id">
+                    <span>{{el.name}}</span>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+
+        </div>
+        <div class="panel-footer text-right">
+          <button class="btn btn-primary" type="submit">Move</button>
+          <button class="btn btn-default" ng-click="vm.moveDlgShow = false" type="button">Close</button>
+        </div>
+      </div>
+    </form>
+  </modal-dialog>
+
+  <modal-dialog show="vm.filterDlgShow" dialog-title="Add / Edit filter" ng-modal-class="ng-modal-small" ng-cloak>
+    <form name="vm.treeForm" ng-submit="vm.filterSubmit()">
+      <div class="panel-sm panel-default panel-grid">
+        <div class="panel-body">
+
+          <div class="row h-2-2">
+            <div class="l-15 col-xs-16"><label>Name:</label></div>
+            <div class="l-15 col-xs-16">
+              <input class="form-control" type="text" ng-model="vm.filter.name" name="node_name" focus-on="vm.filterDlgShow" required/>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="panel-footer text-right">
+          <button class="btn btn-primary" type="submit">Save</button>
+          <button class="btn btn-default" ng-click="vm.filterDlgShow = false" type="button">Close</button>
+        </div>
+      </div>
+    </form>
+  </modal-dialog>
+
+</div>

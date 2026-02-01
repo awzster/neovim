@@ -1,0 +1,39 @@
+
+[
+  {
+    "key": "ctrl+z",
+    "command": "undo",
+    "when": "editorTextFocus && neovim.active"
+  },
+  {
+    "key": "ctrl+r",
+    "command": "redo",
+    "when": "editorTextFocus && neovim.active"
+  },
+  {
+    "key": "ctrl+r",
+    "command": "redo",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "shift+left",
+    "command": "workbench.action.previousEditor",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "shift+right",
+    "command": "workbench.action.nextEditor",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "F12",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "Ctrl+F11",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+
+
+]

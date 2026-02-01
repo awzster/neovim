@@ -1,0 +1,124 @@
+<div class="main-grid">
+  <header>
+
+    <div class="filter-grid">
+
+      <div class="flex h-2-2" style="margin-top: 1px;">
+        <div class="text-nowrap l-15">Total rows:</div>
+        <div class="sb l-5">{{vm.linesCount | num}}</div>
+        <div ng-show="vm.isFilterActive()" class="l-5 sb col-xs-6 text-left" style="color: #006400;">({{vm.totalRowAfterFilter | num: 0: 1}})</div>
+      </div>
+      
+      
+      <isindex>
+
+      <form name="vm.searchForm" class="search-form" ng-submit="vm.search()">
+        <div class="search-fields">
+
+          <div class="field">
+            <div class="field-label">Tree:</div>
+            <div class="field-control">
+              <ui-select
+                ng-model="vm.filter.tree"
+                theme="select2"
+                ng-required="true"
+                style="width: 100%;">
+                <ui-select-match allow-clear="true" placeholder="Select the tree">
+                  <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="el in ( vm.treeList | filter: $select.search ) | limitTo:250 track by el.id">
+                  <span>{{el.name}}</span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">Lang:</div>
+            <div class="field-control">
+              <ui-select
+                ng-model="vm.filter.selLang"
+                theme="select2"
+                ng-required="true"
+                style="width: 100%;">
+                <ui-select-match allow-clear="true" placeholder="Select the language">
+                  <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="el in ( vm.langList | filter: $select.search ) | limitTo:250 track by el.id">
+                  <span>{{el.name}}</span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">Product type:</div>
+            <div class="field-control">
+              <ui-select
+                ng-model="vm.filter.pt"
+                theme="select2"
+                ng-required="false"
+                style="width: 100%;">
+                <ui-select-match allow-clear="true" placeholder="All product types">
+                  <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="el in ( vm.ptList | filter: vm.ptSelectFilter | filter: $select.search ) | limitTo:250 track by el.id">
+                  <span>{{el.name}}</span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">Brand:</div>
+            <div class="field-control">
+              <ui-select
+                ng-model="vm.filter.brand"
+                theme="select2"
+                ng-required="false"
+                style="width: 100%;">
+                <ui-select-match allow-clear="true" placeholder="All brands">
+                  <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="el in ( vm.brandList | filter: $select.search ) | limitTo:250 track by el.id">
+                  <span>{{el.name}}</span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">Article:</div>
+            <div class="field-control">
+              <input class="form-control" type="search" ng-model="vm.filter.article" name="filter_article"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-actions">
+          <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+
+      </form>
+
+      <div class="text-right">
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <main style="height: 100%;">
+    <div ag-grid="vm.gridOptions" class="ag-theme-alpine" style="height: 100%;" id="ag-grid" ng-if="vm.gridOptions"></div>
+  </main>
+
+  <!--
+      <footer></footer>
+  -->
+
+  <div ng-include="'./include/dlg.html'"></div>
+
+</div>
+
+

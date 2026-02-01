@@ -1,0 +1,105 @@
+.filter-grid {
+  padding: 2px;
+  line-height: 2.2rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2px;
+  align-items: start;
+}
+
+.search-form {
+  marging-left: 10px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: end;
+  width: 100%;
+  min-width: 0;
+}
+
+.search-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px 10px;
+  min-width: 0;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+
+.field-label {
+  justify-self: end;
+  white-space: nowrap;
+  margin: 0 2px 0 10px;
+}
+
+.field-control {
+  min-width: 0;
+}
+
+.field-control .ui-select-container {
+  width: 100%;
+}
+
+.search-actions .btn {
+  width: auto;
+  padding-left: 14px;
+  padding-right: 14px;
+  white-space: nowrap;
+}
+
+.editable-cell {
+  outline: solid 1px #999 !important;
+  border-top: none !important;
+}
+
+.blocked-cell {
+  outline: nonde;
+  background-color: #ddd;
+}
+
+
+.btn-link.glyphicon {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+.btn-link.text-primary {
+  color: #337ab7 !important;
+  margin-left: 6px;
+}
+.btn-link.text-danger {
+  color: #a94442 !important;
+  margin-right: 6px;
+}
+.override-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.btn-link.glyphicon {
+  padding: 0;
+  border: none;
+  background: transparent;
+  line-height: 1;
+}
+
+.btn-link.glyphicon:focus {
+  outline: none;
+}
+
+.override-controls .btn-link[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.override-controls .btn-link[disabled]:hover {
+  text-decoration: none;
+}

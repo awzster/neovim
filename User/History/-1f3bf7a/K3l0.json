@@ -1,0 +1,31 @@
+
+[
+  {
+    "key": "ctrl+z",
+    "command": "undo",
+    "when": "editorTextFocus && neovim.active"
+  },
+  {
+    "key": "ctrl+r",
+    "command": "redo",
+    "when": "editorTextFocus && neovim.active"
+  },
+{
+  "key": "ctrl+r",
+  "command": "redo",
+  "when": "editorTextFocus"
+},
+{
+  "key": "; l",
+  "command": "workbench.action.files.save",
+  "when": "editorTextFocus"
+},
+{
+  "key": "; l",
+  "command": "workbench.action.tasks.runTask",
+  "args": "merge-current-file",
+  "when": "editorTextFocus"
+}
+
+
+]

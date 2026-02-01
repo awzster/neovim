@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "deploy-current-file",
+      "type": "shell",
+      "command": "/home/za/usr/bin/deploy-vim.sh",
+      "args": [
+        "${fileBasename}",
+        "${fileDirname}"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared",
+        "focus": false
+      }
+    },
+{
+  "label": "merge-current-file",
+  "type": "shell",
+  "command": "copy2dev.sh",
+  "args": [
+    "${fileBasename}",
+    "${fileDirname}"
+  ],
+  "problemMatcher": [],
+  "presentation": {
+    "reveal": "always",
+    "panel": "shared",
+    "focus": false,
+    "clear": true
+  }
+}
+]
+}

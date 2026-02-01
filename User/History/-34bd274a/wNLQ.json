@@ -1,0 +1,67 @@
+{
+  "editor.fontFamily": "FiraCode Nerd Font Mono",
+  "editor.fontSize": 21,
+  "editor.fontLigatures": false,
+  "workbench.colorTheme": "Gruvbox Material Dark",
+  "gruvboxMaterial.darkContrast": "medium",
+  "editor.minimap.enabled": false,
+  "breadcrumbs.enabled": false,
+  "workbench.activityBar.location": "hidden",
+  "workbench.statusBar.visible": true,
+  "vscode-neovim.neovimInitVimPaths": {
+    "linux": "~/.config/nvim/init_vscode.lua"
+  },
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "editor.tabCompletion": "on",
+  "editor.snippetSuggestions": "top",
+  "editor.suggestSelection": "first",
+  "editor.acceptSuggestionOnEnter": "smart",
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": false
+  },
+  "editor.suggest.showSnippets": true,
+  "editor.inlineSuggest.enabled": true,
+  "vscode-neovim.ctrlKeysForNormalMode": [ "a", "b", "d", "e", "f", "h", "i", "j", "k", "l", "m", "o", "t", "u", "v", "w", "x", "y", "/", "]" ],
+  "vscode-neovim.ctrlKeysForInsertMode": [ "a", "d", "h", "j", "m", "o", "t", "u", "w" ],
+  "files.autoSave": "afterDelay",
+  "workbench.editor.enablePreview": false,
+  "local-history.enabled": 1,
+  "local-history.saveDelay": 300,
+  "local-history.maxFileSize": 1024,
+  "local-history.daysToKeep": 7,
+
+"eslint.enable": true,
+"eslint.validate": [
+  "javascript",
+  "javascriptreact",
+  "html"
+],
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+"files.trimTrailingWhitespace": true,
+
+"eslint.useFlatConfig": true,
+"eslint.options": {
+  "overrideConfigFile": "/home/za/eslint.config.cjs"
+},
+"window.titleBarStyle": "native",
+
+"editor.showFoldingControls": "always",
+"editor.folding": true,
+"editor.foldingStrategy": "auto",
+
+"window.title": "${dirty}${activeEditorShort}${separator}${rootName}",
+
+"local-history.enabled": true,
+"local-history.path": "/home/za/.vscode-local-history",
+"local-history.useWorkspacePath": false,
+"local-history.maxFileEntries": 50,
+"local-history.saveDelay": 0
+
+}

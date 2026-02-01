@@ -1,0 +1,29 @@
+
+[
+  {
+    "key": "ctrl+z",
+    "command": "undo",
+    "when": "editorTextFocus && neovim.active"
+  },
+  {
+    "key": "ctrl+r",
+    "command": "redo",
+    "when": "editorTextFocus && neovim.active"
+  },
+{
+  "key": "ctrl+r",
+  "command": "redo",
+  "when": "editorTextFocus"
+},
+  {
+    "key": "shift+left",
+    "command": "workbench.action.previousEditor",
+    "when": "editorTextFocus && neovim.active"
+  },
+  {
+    "key": "shift+right",
+    "command": "workbench.action.nextEditor",
+    "when": "editorTextFocus && neovim.active"
+  }
+
+]

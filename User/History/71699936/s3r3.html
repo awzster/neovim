@@ -1,0 +1,66 @@
+
+  <div class="main-grid">
+    <header>
+
+      <div class="filter-info">
+
+        <div class="flex h-2-2">
+          <div class="text-nowrap l-15">Total rows:</div>
+          <div class="sb l-5">{{vm.linesCount | num}}</div>
+          <div ng-show="vm.isFilterActive()" class="l-5 sb col-xs-6 text-left" style="color: #006400;">({{vm.totalRowAfterFilter | num: 0: 1}})</div>
+        </div>
+
+        <div class="l-15" style="margin-top: 2px;">
+          <div class="flex">
+            <input class="form-control"
+                   type="text"
+                   ng-model="vm.quickfilterText"
+
+                   placeholder="Quick filter"
+                   ng-keyup="vm.setQuickFilter()"
+                   style="width: 8em;">
+            <span class="glyphicon glyphicon-remove pointer"
+                  ng-show="vm.quickfilterText"
+                  ng-click="vm.resetQuickfilter()"
+                  style="position: relative; right: 16px; top: 5px; display: inline-block;">
+            </span>
+            <span class="glyphicon glyphicon-search"
+                  ng-hide="vm.quickfilterText"
+                  style="position: relative; right: 16px; top: 5px; display: inline-block;">
+            </span>
+            </input>
+          </div>
+        </div>
+
+        <div class="text-right">
+          <button class="btn btn-primary" type="button" ng-click="vm.filterDlgOpen(null)">Create rule</button>
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <main style="height: 100%;">
+      <div class="main-content l-15">
+        <div>
+          <h3>{{vm.tree.name}}</h3>
+          <hr />
+
+          <button class="btn btn-default" type="button" ng-click="vm.back()">Back to Tree list</button>
+
+        </div>
+        <div ag-grid="vm.gridOptions" class="ag-theme-alpine" style="height: 100%;" id="ag-grid" ng-if="vm.gridOptions"></div>
+
+      </div>
+    </main>
+
+    <!--
+      <footer></footer>
+    -->
+
+    <div ng-include="'./include/dlg.html'"></div>
+
+  </div>
+
+

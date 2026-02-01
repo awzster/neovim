@@ -1,0 +1,85 @@
+
+  <div class="main-grid">
+    <header>
+
+      <div class="filter-info">
+
+        <div class="flex h-2-2">
+          <div class="text-nowrap l-15">Total rows:</div>
+          <div class="sb l-5">{{vm.linesCount | num}}</div>
+          <div ng-show="vm.isFilterActive()" class="l-5 sb col-xs-6 text-left" style="color: #006400;">({{vm.totalRowAfterFilter | num: 0: 1}})</div>
+        </div>
+
+        <div class="l-15" style="margin-top: 2px;">
+          <div class="flex">
+            <input class="form-control"
+                   type="text"
+                   ng-model="vm.quickfilterText"
+
+                   placeholder="Quick filter"
+                   ng-keyup="vm.setQuickFilter()"
+                   style="width: 8em;">
+            <span class="glyphicon glyphicon-remove pointer"
+                  ng-show="vm.quickfilterText"
+                  ng-click="vm.resetQuickfilter()"
+                  style="position: relative; right: 16px; top: 5px; display: inline-block;">
+            </span>
+            <span class="glyphicon glyphicon-search"
+                  ng-hide="vm.quickfilterText"
+                  style="position: relative; right: 16px; top: 5px; display: inline-block;">
+            </span>
+            </input>
+          </div>
+        </div>
+
+        <div></div>
+
+        <form name="vm.searchForm" ng-submit="vm.search()">
+          <div class="flex-center">
+
+            <div>Product type:</div>
+            <div class="l-5" style="width: 18rem;">
+              <ui-select
+                  ng-model="vm.filter.pt"
+                  append-to-body="true"
+                  theme="select2"
+                  ng-required="false"
+                  style="width: 100%;">
+                <ui-select-match allow-clear="true" placeholder="All product types">
+                  <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="el in ( vm.ptList | filter: $select.search ) | limitTo:50 track by el.id">
+                  <span>{{el.name}}</span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+
+            <div class="l-40">
+              <button class="btn btn-success" type="submit">Search</button>
+            </div>
+
+          </div>
+        </form>
+
+        <div class="flex-end">
+          <button class="btn btn-primary" type="button" ng-click="vm.templateDlgOpen()">Create template</button>
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <main style="height: 100%;">
+      <div ag-grid="vm.gridOptions" class="ag-theme-alpine" style="height: 100%;" id="ag-grid" ng-if="vm.gridOptions"></div>
+    </main>
+
+    <!--
+      <footer></footer>
+    -->
+
+    <!--div ng-include="'./include/dlg.html'"></div-->
+
+  </div>
+
+
