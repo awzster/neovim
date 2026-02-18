@@ -39,6 +39,33 @@ return {
         ['<C-l>'] = { 'show' },
       },
       
+      -- НОВОЕ: keymap для командной строки
+      cmdline = {
+        keymap = {
+          preset = 'none',
+          --['<Tab>'] = { 'select_next', 'fallback' },
+          ['<S-Tab>'] = { 'select_prev', 'fallback' },
+          -- Стрелки для навигации
+          ['<Down>'] = { 'select_next', 'fallback' },
+          ['<Up>'] = { 'select_prev', 'fallback' },
+          -- Ctrl+J/K как в обычном режиме
+          ['<C-j>'] = { 'select_next', 'fallback' },
+          ['<C-k>'] = { 'select_prev', 'fallback' },
+          -- Принятие
+          ['<CR>'] = { 'accept', 'fallback' },
+          ['<C-y>'] = { 'select_and_accept' },
+          -- Отмена
+          ['<C-e>'] = { 'hide' },
+          ['<C-c>'] = { 'cancel' },
+        },
+        sources = function()
+          local type = vim.fn.getcmdtype()
+          if type == '/' or type == '?' then return { 'buffer' } end
+          if type == ':' then return { 'cmdline' } end
+          return {}
+        end,
+      },
+      
       appearance = {
         use_nvim_cmp_as_default = false,
         nerd_font_variant = 'mono',
@@ -77,7 +104,6 @@ return {
         
         accept = { auto_brackets = { enabled = true } },
         
-        -- ИСПРАВЛЕНО: убраны неизвестные поля
         trigger = {
           show_in_snippet = true,
         },
@@ -121,7 +147,6 @@ return {
                 add_buf(vim.fn.bufnr('#'))
                 add_buf(vim.api.nvim_get_current_buf())
                 
-                -- ОТЛАДКА
                 local names = {}
                 for _, b in ipairs(bufs) do
                   local n = vim.api.nvim_buf_get_name(b)
