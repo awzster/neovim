@@ -119,3 +119,26 @@ vim.keymap.set("s", "<C-\\>", function()
   require("luasnip").expand()
 end, { silent = true })
 
+-- Добавь это в секцию keys твоего плагина или просто в init.lua
+vim.keymap.set({ "n", "v" }, "<leader>ca", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>cb", function()
+  -- Открываем чат
+  vim.cmd("CodeCompanionChat Toggle")
+  
+  -- Используем API для вставки переменной в текущую строку чата
+  -- Это имитирует ручной выбор из меню #
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("i#{buffer}<CR>", true, false, true), "n", false)
+end, { desc = "AI Chat with current buffer" })
+-- Быстрая правка (Inline)
+vim.keymap.set("n", "<leader>ci", "<cmd>CodeCompanion<cr>", { noremap = true, silent = true })
+
+
+-- Вставить поверх выделенного текста, сохранив текущий буфер
+-- Теперь выделенный текст не заменяет собой скопированный
+vim.keymap.set("x", "p", [["_dP]])
+vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("v", "//", [[y/\V<C-R>=escape(@",'/\')<CR><CR>]])
+
+

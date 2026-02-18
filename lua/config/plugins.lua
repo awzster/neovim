@@ -6,7 +6,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  { "folke/lazy.nvim", version = false },
 
   -- базовые
   --  { "drmingdrmer/xptemplate" },
@@ -19,6 +18,7 @@ require("lazy").setup({
 
   -- treesitter
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+  { "nvim-treesitter/nvim-treesitter-context" }, -- Добавь эту строку
 
   -- пары и теги
   { "windwp/nvim-autopairs" },
@@ -72,8 +72,8 @@ require("lazy").setup({
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" } },
 
   -- diagnostics
-  --{ "https://git.sr.ht/~whynothugo/lsp_lines.nvim" },
-  { "lsp_lines.nvim" },
+  { "https://git.sr.ht/~whynothugo/lsp_lines.nvim" },
+  --{ "lsp_lines.nvim" },
 
   -- форматирование
   { "stevearc/conform.nvim", event = "VeryLazy" },
@@ -101,7 +101,7 @@ require("lazy").setup({
   },
 
   -- Completion
-  {
+  --[[ {
     "hrsh7th/nvim-cmp",
     dependencies = {
       "L3MON4D3/LuaSnip",           -- уже объявлен выше, но можно повторить
@@ -114,7 +114,8 @@ require("lazy").setup({
     config = function()
       require("config.cmp")
     end,
-  },
+  }, ]]
+
   {
     "numToStr/Comment.nvim",
     opts = {
@@ -137,7 +138,8 @@ require("lazy").setup({
       require("Comment").setup(opts)
     end,
   },
-  {
+
+  --[[ {
     "olimorris/codecompanion.nvim",
     dependencies =
       {
@@ -147,6 +149,12 @@ require("lazy").setup({
     config = function()
       require("config.codecompanion")
     end,
-  },
-})
+  }, ]]
+
+  { import = "plugins" },
+},
+{
+  lockfile = "/home/za/.config/nvim/lazy-lock.json",
+}
+)
 

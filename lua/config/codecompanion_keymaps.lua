@@ -1,17 +1,26 @@
--- CodeCompanion keymaps
--- Adjust commands if your installed version uses different names (see :help codecompanion)
+-- codecompanion_keymaps.lua
 
 local opts = { noremap = true, silent = true }
+local visual_opts = { noremap = true, silent = true, mode = "v" }
 
--- Chat
-vim.keymap.set("n", "<leader>ac", "<cmd>CodeCompanionChat<CR>", opts)
+-- Основные команды
+vim.keymap.set("n", "<leader>ac", "<cmd>CodeCompanionChat Toggle<CR>", opts) -- Toggle чата
+vim.keymap.set("n", "<leader>aa", "<cmd>CodeCompanionActions<CR>", opts)      -- Палитра действий
 
--- Inline (apply / rewrite selection)
-vim.keymap.set("v", "<leader>ai", "<cmd>CodeCompanionInline<CR>", opts)
+-- Выделение + действия (visual mode)
+vim.keymap.set("v", "<leader>ai", "<cmd>CodeCompanionInline<CR>", opts)        -- Инлайн редактирование
+vim.keymap.set("v", "<leader>ae", "<cmd>CodeCompanionChat Explain<CR>", opts)  -- Объяснить код
+vim.keymap.set("v", "<leader>ar", "<cmd>CodeCompanionChat Refactor<CR>", opts) -- Рефакторинг
+vim.keymap.set("v", "<leader>af", "<cmd>CodeCompanionChat Fix<CR>", opts)      -- Исправить баги
+vim.keymap.set("v", "<leader>ad", "<cmd>CodeCompanionChat Docs<CR>", opts)     -- Документация
 
--- Agent / Actions (often opens an action palette or agent UI)
-vim.keymap.set("n", "<leader>aa", "<cmd>CodeCompanionActions<CR>", opts)
+-- Буфер + чат
+vim.keymap.set("n", "<leader>ab", "<cmd>CodeCompanionChat Add<CR>", opts)      -- Добавить буфер в чат
+vim.keymap.set("v", "<leader>as", "<cmd>CodeCompanionChat Send<CR>", opts)     -- Отправить выделенное
 
--- Optional: toggle chat visibility, if supported in your version
--- vim.keymap.set("n", "<leader>at", "<cmd>CodeCompanionChat Toggle<CR>", opts)
+-- Навигация по чатам (если несколько)
+vim.keymap.set("n", "<leader>an", "<cmd>CodeCompanionChat Next<CR>", opts)     -- Следующий чат
+vim.keymap.set("n", "<leader>ap", "<cmd>CodeCompanionChat Prev<CR>", opts)     -- Предыдущий чат
 
+-- Быстрый доступ к последнему чату
+vim.keymap.set("n", "<leader>a<leader>", "<cmd>CodeCompanionChat<CR>", opts)

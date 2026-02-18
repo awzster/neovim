@@ -28,7 +28,9 @@ function! MergeCurrentBuffer()
 endfunction
 
 function! MergeAllBuffers()
+  ":let buf=bufnr('%') | exec 'bufdo !copy2dev.sh %:t %:p:h' | exec 'b' buf
   :let buf=bufnr('%') | exec 'bufdo !copy2dev.sh %:t %:p:h' | exec 'b' buf
+
 endfunction
 
 function! AutoHighlightToggle()

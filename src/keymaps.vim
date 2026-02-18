@@ -1,6 +1,5 @@
 " Быстрые команды
 nmap <leader>t :call TrimWhitespace()<CR>
-nmap <leader>s :so ~/.vimrc<CR>
 nmap <silent> <leader><leader> :noh<CR>
 nnoremap z/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 nnoremap S i<cr><esc>^mwgk:silent! s/\v +$//<cr>:noh<cr>`w
