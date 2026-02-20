@@ -1,6 +1,61 @@
 -- lua/config/ui.lua
-local utils = require("config.utils")
+-- UI: nvim-tree, telescope
 
+-- ═══════════════════════════════════════════════════════════
+-- NVIM-TREE
+-- ═══════════════════════════════════════════════════════════
+
+require("nvim-tree").setup({
+  sort_by = "modification_time",
+  renderer = {
+    group_empty = true,
+  },
+})
+
+-- ═══════════════════════════════════════════════════════════
+-- TELESCOPE
+-- ═══════════════════════════════════════════════════════════
+local telescope = require("telescope")
+local builtin = require("telescope.builtin")
+
+telescope.setup({
+  defaults = {
+    sorting_strategy = "ascending",
+    layout_strategy = "horizontal",
+    prompt_prefix = "🔍 ",
+    selection_caret = "➤ ",
+    path_display = { "truncate" },
+    vimgrep_arguments = {
+      "rg", "--color=never", "--no-heading", "--with-filename",
+      "--line-number", "--column", "--smart-case",
+    },
+  },
+})
+
+-- Extensions
+telescope.load_extension("aerial")
+
+-- Keymaps
+vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
+vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live grep" })
+vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Buffers" })
+vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help" })
+vim.keymap.set("n", "<leader>fs", function()
+  builtin.grep_string({ search = vim.fn.expand("<cword>") })
+end, { desc = "Grep word under cursor" })
+vim.keymap.set("n", "<leader>fa", function()
+  telescope.extensions.aerial.aerial()
+end, { desc = "Search symbols (Aerial)" })
+
+-- ═══════════════════════════════════════════════════════════
+-- UTILS
+-- ═══════════════════════════════════════════════════════════
+vim.keymap.set("x", "p", [["_dP]], { desc = "Paste without yank" })
+vim.keymap.set("n", "<leader>r", ":%s/<C-r><C-w>//g<Left><Left>", { desc = "Replace word under cursor" })
+vim.keymap.set("n", "<F2>", "bve", { desc = "Select word" })
+--nmap <F2> bve
+
+local utils = require("config.utils")
 -- lualine
 require('lualine').setup({
   options = {
@@ -27,11 +82,6 @@ require('lualine').setup({
        show_filename_only = true,
        show_modified_status = true, -- Shows indicator when the buffer is modified.
 
-     -- fmt = function(name, bufnr)
-     --   if name == "" then name = "[No Name]" end
-     --   local filename = vim.fn.fnamemodify(name, ":t")
-     --   return string.format("[%d %s]", bufnr, filename)
-     -- end,
      }
    },
     lualine_z = { 'tabs' },
@@ -39,106 +89,31 @@ require('lualine').setup({
   extensions = { 'quickfix', 'nvim-tree', 'aerial' }
 })
 
--- nvim-tree
---require("nvim-tree").setup()
-require("nvim-tree").setup({
-  sort_by = "modification_time", -- сортировка по времени изменения
-  -- другие опции...
-})
-vim.keymap.set("n", "<F12>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
-
--- telescope
-local telescope = require("telescope")
-telescope.setup({
-  defaults = {
-    -- Делает поиск нечувствительным к регистру
-    sorting_strategy = "ascending",
-    layout_strategy = "horizontal",
-
-    vimgrep_arguments = {
-      "rg",
-      "--color=never",
-      "--no-heading",
-      "--with-filename",
-      "--line-number",
-      "--column",
-      "--smart-case",
-    },
-    prompt_prefix = "🔍 ",
-    selection_caret = "➤ ",
-    path_display = { "truncate" },
-  },
-})
-
-require("telescope").load_extension("aerial")
-local builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
-vim.keymap.set("n", "<leader>fg", builtin.live_grep,  { desc = "Live grep" })
-vim.keymap.set("n", "<leader>fb", builtin.buffers,    { desc = "Buffers" })
-vim.keymap.set("n", "<leader>fh", builtin.help_tags,  { desc = "Help" })
-vim.keymap.set("n", "<leader>o", function() builtin.lsp_document_symbols() 
-end, { desc = "Document Symbols" })
-vim.keymap.set('n', '<leader>fs', function()
-  require('telescope.builtin').grep_string({ search = vim.fn.expand('<cword>') })
-end, { desc = 'Grep word under cursor' })
-
-vim.keymap.set("n", "<leader>sa", function()
-    require("telescope").extensions.aerial.aerial()
-end, { desc = "Search Symbols (Aerial)" })
-
--- Переключение на N-й буфер в списке (1–9) по <Leader> + цифра
 for i = 1, 9 do
-  vim.keymap.set("n", "<Leader>" .. i, function()
-    -- Получаем список всех отображаемых буферов (listed = true)
+  local index = i
+  vim.keymap.set("n", "<Leader>" .. index, function()
+    -- Получаем список всех ПЕРЕЧИСЛЕННЫХ буферов (buflisted)
     local bufs = vim.fn.getbufinfo({ buflisted = 1 })
-    if bufs[i] then
-      vim.cmd("buffer " .. bufs[i].bufnr)
+    
+    if bufs[index] then
+      -- bufs[index].bufnr — это реальный ID буфера (например, 3)
+      vim.api.nvim_set_current_buf(bufs[index].bufnr)
+    else
+      vim.notify("Buffer " .. index .. " not found in list", vim.log.levels.WARN)
     end
-  end, { desc = "Switch to buffer #" .. i })
+  end, { desc = "Switch to listed buffer #" .. index })
 end
+
+vim.keymap.set("n", "<F12>", "<cmd>NvimTreeToggle<cr>", { silent = true, desc = "Toggle file tree" })
+-- Навигация по буферам
+vim.keymap.set("n", "<S-Left>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
+vim.keymap.set("n", "<S-Right>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+vim.keymap.set("n", "<C-Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+vim.keymap.set("i", "<S-Left>", "<Esc><cmd>bprevious<cr>", { desc = "Previous buffer" })
+vim.keymap.set("i", "<S-Right>", "<Esc><cmd>bnext<cr>", { desc = "Next buffer" })
+vim.keymap.set("i", "<C-Tab>", "<Esc><cmd>bnext<cr>", { desc = "Next buffer" })
 
 vim.keymap.set("i", "<C-\\>", function()
   require("luasnip").expand()
 end, { silent = true })
-
-vim.keymap.set({"i", "s"}, "<Tab>", function()
-  if require("luasnip").expand_or_jumpable() then
-    require("luasnip").expand_or_jump()
-  else
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
-  end
-end, { silent = true })
-
---[[ vim.keymap.set("i", "<C-l>", function()
-  if require("luasnip").choice_active() then
-    require("luasnip").change_choice(1)
-  end
-end, { silent = true }) ]]
-
-vim.keymap.set("s", "<C-\\>", function()
-  require("luasnip").expand()
-end, { silent = true })
-
--- Добавь это в секцию keys твоего плагина или просто в init.lua
-vim.keymap.set({ "n", "v" }, "<leader>ca", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
-vim.keymap.set({ "n", "v" }, "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
-vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>cb", function()
-  -- Открываем чат
-  vim.cmd("CodeCompanionChat Toggle")
-  
-  -- Используем API для вставки переменной в текущую строку чата
-  -- Это имитирует ручной выбор из меню #
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("i#{buffer}<CR>", true, false, true), "n", false)
-end, { desc = "AI Chat with current buffer" })
--- Быстрая правка (Inline)
-vim.keymap.set("n", "<leader>ci", "<cmd>CodeCompanion<cr>", { noremap = true, silent = true })
-
-
--- Вставить поверх выделенного текста, сохранив текущий буфер
--- Теперь выделенный текст не заменяет собой скопированный
-vim.keymap.set("x", "p", [["_dP]])
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
-vim.keymap.set("v", "//", [[y/\V<C-R>=escape(@",'/\')<CR><CR>]])
-
 

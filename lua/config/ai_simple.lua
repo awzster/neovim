@@ -1,7 +1,7 @@
 -- Простой AI интеграция без плагина
 
 local OLLAMA_URL = "http://localhost:11434/api/generate"
-local MODEL = "qwen2.5-coder:14b"
+local MODEL = "qwen2.5-coder:7b"
 
 local function send_buffer(prompt_template)
   local buf = vim.api.nvim_get_current_buf()

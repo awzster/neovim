@@ -109,63 +109,35 @@ return {
         },
       },
       
-      sources = {
-        default = { 'snippets', 'buffer', 'lsp',  'path' },
+sources = {
+        -- 'snippets' в начале — это ок, но LSP обычно важнее буфера
+        default = { 'snippets', 'buffer', 'lsp', 'path' },
         
         providers = {
           buffer = {
             name = 'Buffer',
             module = 'blink.cmp.sources.buffer',
-            
+            -- Указываем, какие буферы сканировать
             opts = {
               get_bufnrs = function()
-                local bufs = {}
-                local seen = {}
-                
-                local function add_buf(buf)
-                  if not buf or buf == 0 then return end
-                  if seen[buf] then return end
-                  if not vim.api.nvim_buf_is_valid(buf) then return end
-                  if vim.bo[buf].buftype ~= '' then return end
-                  
-                  seen[buf] = true
-                  table.insert(bufs, buf)
-                end
-                
-                for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
-                  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
-                    add_buf(vim.api.nvim_win_get_buf(win))
-                  end
-                end
-                
-                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                  if vim.fn.buflisted(buf) == 1 then
-                    add_buf(buf)
-                  end
-                end
-                
-                add_buf(vim.fn.bufnr('#'))
-                add_buf(vim.api.nvim_get_current_buf())
-                
-                local names = {}
-                for _, b in ipairs(bufs) do
-                  local n = vim.api.nvim_buf_get_name(b)
-                  table.insert(names, n ~= '' and vim.fn.fnamemodify(n, ':t') or '[No Name]')
-                end
-                vim.notify('Buffer source: ' .. #bufs .. ' буферов: ' .. table.concat(names, ', '), vim.log.levels.DEBUG)
-                
-                return bufs
+                return vim.tbl_filter(function(bufnr)
+                  return vim.api.nvim_buf_is_valid(bufnr) 
+                         and vim.bo[bufnr].buftype == "" -- только обычные файлы
+                end, vim.api.nvim_list_bufs())
               end,
             },
-            
+            -- min_keyword_length = 2 — это хорошо для JS
             min_keyword_length = 2,
-            score_offset = 100,
+            -- ВАЖНО: снижаем score_offset. 
+            -- Если у буфера 100, а у LSP 60, буфер завалит вам весь список мусором.
+            -- Обычно ставят ниже LSP.
+            score_offset = 15, 
           },
           
           lsp = {
             name = 'LSP',
             module = 'blink.cmp.sources.lsp',
-            score_offset = 60,
+            score_offset = 100, -- LSP должен быть в приоритете
           },
           
           snippets = {
@@ -179,7 +151,7 @@ return {
     
     config = function(_, opts)
       require('blink.cmp').setup(opts)
-      vim.notify('Blink.cmp загружен', vim.log.levels.INFO)
+      vim.notify('Blink.cmp are loaded', vim.log.levels.INFO)
     end,
   },
 }
