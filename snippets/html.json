@@ -11,7 +11,7 @@
       "      </tr>",
       "    </thead>",
       "    <tbody>",
-      "      <tr ng-repeat=\"el in vm.$2 track by $index\">",
+      "      <tr ng-repeat=\"el in vm.$2 track by \\$index\">",
       "        <td class=\"text-right\">{{el.pos}}</td>",
       "      </tr>",
       "    </tbody>",

@@ -111,13 +111,17 @@ return {
       
 sources = {
         -- 'snippets' в начале — это ок, но LSP обычно важнее буфера
-        default = { 'snippets', 'buffer', 'lsp', 'path' },
+        default = { 'snippets', 'minuet', 'buffer', 'lsp', 'path' },
         
         providers = {
+          minuet = {
+            name = 'minuet',
+            module = 'minuet.blink',
+            score_offset = 20, -- ставим приоритет чуть ниже, чем у LSP
+          },
           buffer = {
             name = 'Buffer',
             module = 'blink.cmp.sources.buffer',
-            -- Указываем, какие буферы сканировать
             opts = {
               get_bufnrs = function()
                 return vim.tbl_filter(function(bufnr)
@@ -126,24 +130,20 @@ sources = {
                 end, vim.api.nvim_list_bufs())
               end,
             },
-            -- min_keyword_length = 2 — это хорошо для JS
             min_keyword_length = 2,
-            -- ВАЖНО: снижаем score_offset. 
-            -- Если у буфера 100, а у LSP 60, буфер завалит вам весь список мусором.
-            -- Обычно ставят ниже LSP.
-            score_offset = 15, 
+            score_offset = 30, 
           },
           
           lsp = {
             name = 'LSP',
             module = 'blink.cmp.sources.lsp',
-            score_offset = 100, -- LSP должен быть в приоритете
+            score_offset = 40, -- LSP должен быть в приоритете
           },
           
           snippets = {
             name = 'Snippets',
             module = 'blink.cmp.sources.snippets',
-            score_offset = 80,
+            score_offset = 10,
           },
         },
       },

@@ -58,20 +58,20 @@ vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath("config") .. "/undo/"
 vim.opt.undolevels = 10000
 vim.opt.undoreload = 10000
-vim.opt.backup = true
-vim.opt.backupdir = vim.fn.stdpath("config") .. "/backup/"
+vim.opt.backup = false
+--[[ vim.opt.backupdir = vim.fn.stdpath("config") .. "/backup/"
 vim.opt.backupcopy = "yes"
-vim.opt.writebackup = true
+vim.opt.writebackup = true ]]
 
 -- Фолды
 vim.opt.foldmethod = "indent"
 vim.opt.foldcolumn = "1"
 vim.opt.foldlevelstart = 99
 
--- GUI
+--[[ -- GUI
 if vim.fn.has("gui_running") == 1 then
   vim.opt.guifont = "FiraCode Nerd Font Mono:h17"
-end
+end ]]
 
 -- ═══════════════════════════════════════════════════════════
 -- 3. ФАЙЛТАЙПЫ
@@ -247,7 +247,7 @@ vim.cmd("colorscheme gruvbox-material")
 
 -- GUI
 if vim.fn.has("gui_running") == 1 then
-  vim.opt.guifont = "FiraCode Nerd Font Mono:h17"
+  vim.opt.guifont = "FiraCode Nerd Font Mono:h16"
 end
 
 -- Определяем кастомные группы подсветки для cmp

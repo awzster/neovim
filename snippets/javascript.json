@@ -67,7 +67,7 @@
       "let selected = this.gridOptions.api.getSelectedRows();",
       "if (selected.length == 0)",
       "  return swal('Error!', 'Select one or more lines!', 'error');",
-      "let chain = $q.when(true);",
+      "let chain = \\$q.when(true);",
       "let lines = ${1:selected}.map(el => el.line_id);",
       "lines = _.chunk(lines, 50);",
       "lines.map(el => {",
@@ -75,7 +75,7 @@
       "  return this.doUpdateSingle(el);",
       "  });",
       "});",
-      "return $q.when(chain).then(() => {",
+      "return \\$q.when(chain).then(() => {",
       "  this.search();",
       "});"
     ],

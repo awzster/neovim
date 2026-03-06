@@ -34,7 +34,7 @@ telescope.setup({
 
 -- Extensions
 telescope.load_extension("aerial")
-
+require('telescope').load_extension('fzf')
 -- Keymaps
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live grep" })
@@ -43,6 +43,29 @@ vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help" })
 vim.keymap.set("n", "<leader>fs", function()
   builtin.grep_string({ search = vim.fn.expand("<cword>") })
 end, { desc = "Grep word under cursor" })
+vim.keymap.set("n", "<leader>fa", function()
+  telescope.extensions.aerial.aerial()
+end, { desc = "Search symbols (Aerial)" })
+
+local builtin = require("telescope.builtin")
+
+-- 🎯 Прыжки по коду (Интеллектуальные)
+-- Вместо стандартного gd/gr теперь используем Telescope
+vim.keymap.set("n", "<leader>fd", builtin.lsp_definitions, { desc = "Telescope: Definition" })
+vim.keymap.set("n", "<leader>fr", builtin.lsp_references, { desc = "Telescope: References" })
+vim.keymap.set("n", "<leader>fi", builtin.lsp_implementations, { desc = "Telescope: Implementations" })
+
+-- 📝 Символы (Функции/Переменные)
+-- Идеально для жирных контроллеров AngularJS
+vim.keymap.set("n", "<leader>fw", builtin.lsp_dynamic_workspace_symbols, { desc = "Telescope: Symbols in Project" })
+
+-- 🔍 Твой "Angular Fix" (Grep слова под курсором)
+-- Если LSP не видит связи в AngularJS, этот поиск найдет все упоминания в JS и HTML
+vim.keymap.set("n", "<leader>fs", function()
+  local word = vim.fn.expand("<cword>")
+  builtin.live_grep({ default_text = word })
+end, { desc = "Grep word under cursor (Global search)" })
+
 vim.keymap.set("n", "<leader>fa", function()
   telescope.extensions.aerial.aerial()
 end, { desc = "Search symbols (Aerial)" })
@@ -117,3 +140,20 @@ vim.keymap.set("i", "<C-\\>", function()
   require("luasnip").expand()
 end, { silent = true })
 
+-- Замена выделенного текста
+vim.keymap.set("x", "<leader><leader>r", function()
+    local old_reg = vim.fn.getreg('"')
+    local old_regtype = vim.fn.getregtype('"')
+
+    vim.cmd('normal! "vy')
+    local selection = vim.fn.getreg('v')
+
+    vim.fn.setreg('"', old_reg, old_regtype)
+
+    selection = vim.fn.escape(selection, [[\/.*$^~[]])
+
+    local cmd = ":%s/" .. selection .. "//gci"
+    local keys = vim.api.nvim_replace_termcodes(cmd .. string.rep("<Left>", 4), true, false, true)
+
+    vim.api.nvim_feedkeys(keys, "n", false)
+end, { desc = "Substitute visual selection" })

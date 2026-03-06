@@ -62,7 +62,7 @@ require("lazy").setup({
   { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
   { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" } },
-
+  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   -- diagnostics
   { "https://git.sr.ht/~whynothugo/lsp_lines.nvim" },
 
@@ -74,6 +74,29 @@ require("lazy").setup({
   { "neovim/nvim-lspconfig" },
   { "williamboman/mason-lspconfig.nvim", dependencies = { "mason.nvim", "nvim-lspconfig" } },
 
+  {
+  "milanglacier/minuet-ai.nvim",
+  config = function()
+    require('minuet').setup({
+      provider = 'openai_compatible', -- Используем этот провайдер
+      provider_options = {
+        openai_compatible = {
+          model = 'qwen2.5-coder:7b',
+          end_point = 'http://127.0.0.1:11434/v1/chat/completions',
+--          end_point = 'http://localhost:11434/v1/completions',
+          name = 'Ollama',
+          stream = true,
+          optional = {
+            stop = { "\n" }, -- Чтобы не писал бесконечную портянку
+          }
+        }
+      },
+      -- Чтобы не спамил ошибками, если Ollama выключена
+      throttle = 2000, 
+debug = true, -- ВКЛЮЧАЕМ ЛОГИ
+    })
+  end
+},
   -- LuaSnip
   {
     "L3MON4D3/LuaSnip",
