@@ -2,7 +2,7 @@ return {
   {
     'saghen/blink.cmp',
     version = '*',
-    dependencies = { 'rafamadriz/friendly-snippets' },
+    --dependencies = { 'rafamadriz/friendly-snippets' },
     opts = {
       keymap = {
         preset = 'none',
@@ -110,14 +110,13 @@ return {
       },
       
 sources = {
-        -- 'snippets' в начале — это ок, но LSP обычно важнее буфера
-        default = { 'snippets', 'minuet', 'buffer', 'lsp', 'path' },
+        default = { 'minuet', 'snippets', 'buffer', 'lsp', 'path' },
         
         providers = {
           minuet = {
             name = 'minuet',
             module = 'minuet.blink',
-            score_offset = 20, -- ставим приоритет чуть ниже, чем у LSP
+            score_offset = 90,
           },
           buffer = {
             name = 'Buffer',
@@ -126,24 +125,24 @@ sources = {
               get_bufnrs = function()
                 return vim.tbl_filter(function(bufnr)
                   return vim.api.nvim_buf_is_valid(bufnr) 
-                         and vim.bo[bufnr].buftype == "" -- только обычные файлы
+                         and vim.bo[bufnr].buftype == ""
                 end, vim.api.nvim_list_bufs())
               end,
             },
             min_keyword_length = 2,
-            score_offset = 30, 
+            score_offset = 60, 
           },
           
           lsp = {
             name = 'LSP',
             module = 'blink.cmp.sources.lsp',
-            score_offset = 40, -- LSP должен быть в приоритете
+            score_offset = 10,
           },
           
           snippets = {
             name = 'Snippets',
             module = 'blink.cmp.sources.snippets',
-            score_offset = 10,
+            score_offset = 80,
           },
         },
       },

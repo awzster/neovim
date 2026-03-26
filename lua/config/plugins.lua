@@ -26,7 +26,7 @@ require("lazy").setup({
   -- темы
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   { "sainnhe/everforest", lazy = true, priority = 1000 },
-  { 
+  {
     "sainnhe/gruvbox-material",
     lazy = false,
     priority = 1000,
@@ -49,11 +49,11 @@ require("lazy").setup({
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons",
-      "nvim-telescope/telescope.nvim" 
+      "nvim-telescope/telescope.nvim"
     },
     config = function()
       require("aerial").setup({})
-      require("telescope").load_extension("aerial") 
+      require("telescope").load_extension("aerial")
       vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
     end,
   },
@@ -80,20 +80,42 @@ require("lazy").setup({
     require('minuet').setup({
       provider = 'openai_compatible', -- Используем этот провайдер
       provider_options = {
+        temperature = 0.2,
         openai_compatible = {
           model = 'qwen2.5-coder:7b',
           end_point = 'http://127.0.0.1:11434/v1/chat/completions',
---          end_point = 'http://localhost:11434/v1/completions',
           name = 'Ollama',
           stream = true,
+
+          stop = {
+            "<|endoftext|>",
+            "<|file_separator|>",
+            "\n\n", -- Двойной перенос строки (обычно конец функции/логического блока)
+            "```"   -- Если модель решит выдать Markdown
+          },
           optional = {
-            stop = { "\n" }, -- Чтобы не писал бесконечную портянку
-          }
+            temperature = 0.2, -- Чем ниже, тем меньше "фантазий" у модели
+            max_tokens = 128,  -- Достаточно для дополнения функции
+          },
         }
       },
       -- Чтобы не спамил ошибками, если Ollama выключена
-      throttle = 2000, 
-debug = true, -- ВКЛЮЧАЕМ ЛОГИ
+      --[[ provider_options = {
+        ollama = {
+            model = 'crow-coder', -- Имя из команды ollama create
+            -- Важно: используем v1/chat/completions для совместимости
+            end_point = 'http://127.0.0.1:11434/v1/chat/completions',
+            stream = true,
+            optional = {
+                max_tokens = 256, -- Для автодополнения много не нужно
+                top_p = 0.9,
+                temperature = 0.2, -- Чем ниже, тем стабильнее код
+            },
+        },
+    }, ]]
+    throttle = 200,
+      debounce = 400,
+      debug = false, -- ВКЛЮЧАЕМ ЛОГИ
     })
   end
 },
@@ -129,6 +151,27 @@ debug = true, -- ВКЛЮЧАЕМ ЛОГИ
     config = function(_, opts)
       require("Comment").setup(opts)
     end,
+  },
+  {
+    "akinsho/bufferline.nvim",
+    version = "*",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("bufferline").setup({
+        options = {
+          --mode = "buffers", -- "buffers" | "tabs"
+          --numbers = "ordinal", -- или "ordinal" | "buffer_id" | "none"
+          --diagnostics = "nvim_lsp",
+          -- Показывает иконки, если есть nvim-web-devicons
+          separator_style = "slant", -- или "thick" / "thin"
+          always_show_bufferline = true,
+          show_buffer_close_icons = false,
+          persist_buffer_sort = true,
+          show_buffer_icons = true,
+          mode = "buffers",
+        }
+      })
+    end
   },
 
   { import = "plugins" },

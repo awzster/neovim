@@ -202,9 +202,45 @@
     "body": ["\\$timeout(() => {", "\t$TM_SELECTED_TEXT", "});"],
     "description": "$timeout wrapper"
   },
-  "eslint-disabe": {
+  "eslint-disable": {
     "prefix": "eslint-disable",
-    "body": ["/* eslint-disabe */", "\t$TM_SELECTED_TEXT", "});", "/* eslint-enable */", "});"],
+    "body": ["/* eslint-disable */", "\t$TM_SELECTED_TEXT", "});", "/* eslint-enable */", "});"],
     "description": "$eslint-disable wrapper"
+  },
+
+  "AngularJS Class Controller": {
+    "prefix": "controller",
+    "body": [
+      "'use strict';",
+      "",
+      "class ${1:Name}Controller",
+      "{",
+      "  static \\$inject = ['\\$scope', '\\$q', '${2:mainService}'];",
+      "",
+      "  constructor(\\$scope, \\$q, ${2:mainService})",
+      "  {",
+      "    Object.assign(this, { \\$scope, \\$q, ${2:mainService}});",
+      "",
+      "    this.initEventListeners();",
+      "    this.init();",
+      "  }",
+      "",
+      "  init = () =>",
+      "  {",
+      "    $0",
+      "  };",
+      "",
+      "  initEventListeners = () =>",
+      "  {",
+      "    this.\\$scope.\\$on('${3:eventName}', (event, data) =>",
+      "    {",
+      "      ${4:// logic}",
+      "    });",
+      "  };",
+      "}",
+      "",
+      "angular.module('app').controller('${1:Name}Ctrl', ${1:Name}Controller);"
+    ],
+    "description": "Create an AngularJS ES6 Class Controller (Allman style + EventListeners)"
   }
 }

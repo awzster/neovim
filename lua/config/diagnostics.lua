@@ -99,13 +99,4 @@ vim.api.nvim_create_autocmd("CursorHold", {
   end,
 })
 
--- === ДОП: полный список ошибок по хоткею (опционально) ===
-vim.keymap.set("n", "<leader>dd", function()
-  vim.diagnostic.open_float()
-end, { desc = "Show diagnostics at cursor" })
-
-vim.keymap.set("n", "<leader>de", function()
-  vim.diagnostic.setloclist()
-end, { desc = "Open diagnostics in loclist" })
-
 vim.o.updatetime = 300  -- 300 мс → popup появляется быстро
