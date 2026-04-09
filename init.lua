@@ -247,7 +247,7 @@ vim.cmd("colorscheme gruvbox-material")
 
 -- GUI
 if vim.fn.has("gui_running") == 1 then
-  vim.opt.guifont = "FiraCode Nerd Font Mono:h16"
+  vim.opt.guifont = "FiraCode Nerd Font Mono:h15"
 end
 
 -- Определяем кастомные группы подсветки для cmp

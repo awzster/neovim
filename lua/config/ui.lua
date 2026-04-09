@@ -82,6 +82,7 @@ end, { desc = "Telescope: Search in open buffers" })
 -- ═══════════════════════════════════════════════════════════
 -- UTILS
 -- ═══════════════════════════════════════════════════════════
+vim.keymap.set('i', '<S-Insert>', '<C-r>*', { silent = true })
 vim.keymap.set("x", "p", [["_dP]], { desc = "Paste without yank" })
 --vim.keymap.set("n", "<leader>r", ":%s/<C-r><C-w>//g<Left><Left>", { desc = "Replace word under cursor" })
 vim.keymap.set("n", "<F2>", "bve", { desc = "Select word" })
@@ -122,29 +123,43 @@ require('lualine').setup({
   extensions = { 'quickfix', 'nvim-tree', 'aerial' }
 })
 
+-- for i = 1, 9 do
+--   local index = i
+--   vim.keymap.set("n", "<Leader>" .. index, function()
+--     local bufs = vim.fn.getbufinfo({ buflisted = 1 })
+--     
+--     if bufs[index] then
+--       vim.api.nvim_set_current_buf(bufs[index].bufnr)
+--     else
+--       vim.notify("Buffer " .. index .. " not found in list", vim.log.levels.WARN)
+--     end
+--   end, { desc = "Switch to listed buffer #" .. index })
+-- end
+
 for i = 1, 9 do
-  local index = i
-  vim.keymap.set("n", "<Leader>" .. index, function()
-    -- Получаем список всех ПЕРЕЧИСЛЕННЫХ буферов (buflisted)
-    local bufs = vim.fn.getbufinfo({ buflisted = 1 })
-    
-    if bufs[index] then
-      -- bufs[index].bufnr — это реальный ID буфера (например, 3)
-      vim.api.nvim_set_current_buf(bufs[index].bufnr)
-    else
-      vim.notify("Buffer " .. index .. " not found in list", vim.log.levels.WARN)
-    end
-  end, { desc = "Switch to listed buffer #" .. index })
+  vim.keymap.set("n", "<leader>" .. i, function()
+    require("bufferline").go_to(i, true)
+  end, { silent = true, desc = "BufferLine: Go to tab " .. i })
 end
 
 vim.keymap.set("n", "<F12>", "<cmd>NvimTreeToggle<cr>", { silent = true, desc = "Toggle file tree" })
--- Навигация по буферам
-vim.keymap.set("n", "<S-Left>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
-vim.keymap.set("n", "<S-Right>", "<cmd>bnext<cr>", { desc = "Next buffer" })
-vim.keymap.set("n", "<C-Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
-vim.keymap.set("i", "<S-Left>", "<Esc><cmd>bprevious<cr>", { desc = "Previous buffer" })
-vim.keymap.set("i", "<S-Right>", "<Esc><cmd>bnext<cr>", { desc = "Next buffer" })
-vim.keymap.set("i", "<C-Tab>", "<Esc><cmd>bnext<cr>", { desc = "Next buffer" })
+-- Normal mode: Навигация по визуальному порядку
+vim.keymap.set("n", "<S-Left>", "<Cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer (visual)" })
+vim.keymap.set("n", "<S-Right>", "<Cmd>BufferLineCycleNext<CR>", { desc = "Next buffer (visual)" })
+vim.keymap.set("n", "<C-Tab>", "<Cmd>BufferLineCycleNext<CR>", { desc = "Next buffer (visual)" })
+
+-- Insert mode: Выход в Normal и переключение
+-- (используем <Cmd>...<CR> для чистоты, но <Esc> в начале необходим)
+vim.keymap.set("i", "<S-Left>", "<Esc><Cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer (visual)" })
+vim.keymap.set("i", "<S-Right>", "<Esc><Cmd>BufferLineCycleNext<CR>", { desc = "Next buffer (visual)" })
+vim.keymap.set("i", "<C-Tab>", "<Esc><Cmd>BufferLineCycleNext<CR>", { desc = "Next buffer (visual)" })
+
+-- vim.keymap.set("n", "<S-Left>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
+-- vim.keymap.set("n", "<S-Right>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+-- vim.keymap.set("n", "<C-Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+-- vim.keymap.set("i", "<S-Left>", "<Esc><cmd>bprevious<cr>", { desc = "Previous buffer" })
+-- vim.keymap.set("i", "<S-Right>", "<Esc><cmd>bnext<cr>", { desc = "Next buffer" })
+-- vim.keymap.set("i", "<C-Tab>", "<Esc><cmd>bnext<cr>", { desc = "Next buffer" })
 
 -- Переместить текущий буфер влево (Ctrl + Shift + Left)
 vim.keymap.set("n", "<C-S-Left>", "<Cmd>BufferLineMovePrev<CR>", { silent = true, desc = "Buffer: Move Left" })

@@ -90,31 +90,17 @@ require("lazy").setup({
           stop = {
             "<|endoftext|>",
             "<|file_separator|>",
-            "\n\n", -- Двойной перенос строки (обычно конец функции/логического блока)
-            "```"   -- Если модель решит выдать Markdown
+            "\n\n",
+            "```"
           },
           optional = {
-            temperature = 0.2, -- Чем ниже, тем меньше "фантазий" у модели
-            max_tokens = 128,  -- Достаточно для дополнения функции
+            temperature = 0.2,
+            max_tokens = 64,
           },
         }
       },
-      -- Чтобы не спамил ошибками, если Ollama выключена
-      --[[ provider_options = {
-        ollama = {
-            model = 'crow-coder', -- Имя из команды ollama create
-            -- Важно: используем v1/chat/completions для совместимости
-            end_point = 'http://127.0.0.1:11434/v1/chat/completions',
-            stream = true,
-            optional = {
-                max_tokens = 256, -- Для автодополнения много не нужно
-                top_p = 0.9,
-                temperature = 0.2, -- Чем ниже, тем стабильнее код
-            },
-        },
-    }, ]]
-    throttle = 200,
-      debounce = 400,
+      throttle = 80,
+      debounce = 120,
       debug = false, -- ВКЛЮЧАЕМ ЛОГИ
     })
   end
