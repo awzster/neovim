@@ -74,7 +74,47 @@ require("lazy").setup({
   { "neovim/nvim-lspconfig" },
   { "williamboman/mason-lspconfig.nvim", dependencies = { "mason.nvim", "nvim-lspconfig" } },
 
-  {
+{
+  "milanglacier/minuet-ai.nvim",
+  config = function()
+    require('minuet').setup({
+      provider = 'openai_fim_compatible',
+      context_window = 1024,  -- начни с малого, увеличивай если хватает мощности
+      throttle = 400,         -- можно уменьшить для локальной модели
+      debounce = 300,
+      --notify = 'debug',
+      add_single_line_entry = true,
+      
+      virtualtext = {
+        auto_trigger_ft = { 'lua', 'html', 'js', 'css', 'vim', 'jsp', 'javascript', 'json' },
+        keymap = {
+          accept = '<A-A>',
+          accept_line = '<A-a>',
+          accept_n_lines = '<A-z>',
+          next = '<A-]>',
+          prev = '<A-[>',
+          dismiss = '<A-e>',
+        },
+      },
+      
+      provider_options = {
+        openai_fim_compatible = {
+          api_key = 'TERM',
+          name = 'Ollama',
+          end_point = 'http://127.0.0.1:11434/v1/completions',
+          model = 'qwen2.5-coder:7b',
+          stream = true,
+          optional = {
+            max_tokens = 128,
+            top_p = 0.9,
+            stop = { '"', "<|file_separator|>", "\n\n", "```" },
+          },
+        },
+      },
+    })
+  end,
+},
+  --[[ {
   "milanglacier/minuet-ai.nvim",
   config = function()
     require('minuet').setup({
@@ -104,7 +144,7 @@ require("lazy").setup({
       debug = false, -- ВКЛЮЧАЕМ ЛОГИ
     })
   end
-},
+}, ]]
   -- LuaSnip
   {
     "L3MON4D3/LuaSnip",

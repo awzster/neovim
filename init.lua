@@ -34,6 +34,7 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.autoindent = true
 vim.opt.cindent = true
+vim.opt.autoread = true
 
 -- UI
 vim.opt.wrap = false
@@ -241,6 +242,10 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
       end
     end
   end,
+})
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+  command = "checktime",
 })
 
 vim.cmd("colorscheme gruvbox-material")

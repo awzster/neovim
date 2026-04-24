@@ -1,6 +1,6 @@
 local M = {}
 
-M.current_ai_model = "qwen2.5:7b" -- Дефолтное значение
+M.current_ai_model = "qwen2.5-coder:7b" -- Дефолтное значение
 
 -- 🚀 Оптимизация nvm PATH
 -- Ищем последнюю версию Node.js один раз при загрузке
