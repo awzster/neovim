@@ -10,10 +10,27 @@ return {
         ['<C-y>'] = { 'select_and_accept' },
         
         ['<Tab>'] = {
+          -- function(cmp)
+          --   if cmp.snippet_active() then 
+          --     return cmp.snippet_forward() 
+          --   end
+          --   return cmp.accept()
+          -- end,
+          -- 'fallback',
+
           function(cmp)
             if cmp.snippet_active() then 
               return cmp.snippet_forward() 
             end
+
+            -- Если меню видимо, но мы хотим ghost text (ничего не выбрано руками)
+            -- Проверяем, был ли ручной выбор
+            if cmp.is_menu_visible() then
+              -- Скрыть меню и принять ghost text
+              cmp.cancel()
+            end
+
+            -- Теперь accept должен работать с ghost text
             return cmp.accept()
           end,
           'fallback',
@@ -79,7 +96,7 @@ return {
         
         list = { 
           selection = { 
-            preselect = true, 
+            preselect = false, 
             auto_insert = false 
           } 
         },
@@ -114,11 +131,13 @@ sources = {
         
         providers = {
           minuet = {
+            max_items = 3,
             name = 'minuet',
             module = 'minuet.blink',
             score_offset = 90,
           },
           buffer = {
+            max_items = 5,
             name = 'Buffer',
             module = 'blink.cmp.sources.buffer',
             opts = {
@@ -134,12 +153,14 @@ sources = {
           },
           
           lsp = {
+            max_items = 8,
             name = 'LSP',
             module = 'blink.cmp.sources.lsp',
             score_offset = 10,
           },
           
           snippets = {
+            max_items = 3,
             name = 'Snippets',
             module = 'blink.cmp.sources.snippets',
             score_offset = 80,

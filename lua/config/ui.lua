@@ -43,9 +43,6 @@ vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help" })
 
 -- Поиск слова под курсором (Normal mode) или выделения (Visual mode)
 vim.keymap.set({ "n", "v" }, "<leader>fs", builtin.grep_string, { desc = "Grep selection/word" })
---[[ vim.keymap.set("n", "<leader>fs", function()
-  builtin.grep_string({ search = vim.fn.expand("<cword>") })
-end, { desc = "Grep word under cursor" }) ]]
 
 -- Поиск слова под курсором ТОЛЬКО в открытых буферах
 vim.keymap.set("n", "<leader>fS", function()
@@ -86,7 +83,6 @@ vim.keymap.set('i', '<S-Insert>', '<C-r>*', { silent = true })
 vim.keymap.set("x", "p", [["_dP]], { desc = "Paste without yank" })
 --vim.keymap.set("n", "<leader>r", ":%s/<C-r><C-w>//g<Left><Left>", { desc = "Replace word under cursor" })
 vim.keymap.set("n", "<F2>", "bve", { desc = "Select word" })
---nmap <F2> bve
 --map("n", "<leader>p", "`[v`]")
 
 local utils = require("config.utils")
@@ -106,35 +102,8 @@ require('lualine').setup({
     lualine_y = { 'progress' },
     lualine_z = { 'location', utils.char_code },
   },
-  -- tabline = {
-  --   lualine_c = {
-  --     {
-  --       'buffers',
-  --       mode = 2,
-  --       max_length = 190,
-  --       show_buffer_close_icons = false,
-  --       show_filename_only = true,
-  --       show_modified_status = true,
-  --
-  --     }
-  --   },
-  --   lualine_z = { 'tabs' },
-  -- },
   extensions = { 'quickfix', 'nvim-tree', 'aerial' }
 })
-
--- for i = 1, 9 do
---   local index = i
---   vim.keymap.set("n", "<Leader>" .. index, function()
---     local bufs = vim.fn.getbufinfo({ buflisted = 1 })
---     
---     if bufs[index] then
---       vim.api.nvim_set_current_buf(bufs[index].bufnr)
---     else
---       vim.notify("Buffer " .. index .. " not found in list", vim.log.levels.WARN)
---     end
---   end, { desc = "Switch to listed buffer #" .. index })
--- end
 
 for i = 1, 9 do
   vim.keymap.set("n", "<leader>" .. i, function()
@@ -154,12 +123,6 @@ vim.keymap.set("i", "<S-Left>", "<Esc><Cmd>BufferLineCyclePrev<CR>", { desc = "P
 vim.keymap.set("i", "<S-Right>", "<Esc><Cmd>BufferLineCycleNext<CR>", { desc = "Next buffer (visual)" })
 vim.keymap.set("i", "<C-Tab>", "<Esc><Cmd>BufferLineCycleNext<CR>", { desc = "Next buffer (visual)" })
 
--- vim.keymap.set("n", "<S-Left>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
--- vim.keymap.set("n", "<S-Right>", "<cmd>bnext<cr>", { desc = "Next buffer" })
--- vim.keymap.set("n", "<C-Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
--- vim.keymap.set("i", "<S-Left>", "<Esc><cmd>bprevious<cr>", { desc = "Previous buffer" })
--- vim.keymap.set("i", "<S-Right>", "<Esc><cmd>bnext<cr>", { desc = "Next buffer" })
--- vim.keymap.set("i", "<C-Tab>", "<Esc><cmd>bnext<cr>", { desc = "Next buffer" })
 
 -- Переместить текущий буфер влево (Ctrl + Shift + Left)
 vim.keymap.set("n", "<C-S-Left>", "<Cmd>BufferLineMovePrev<CR>", { silent = true, desc = "Buffer: Move Left" })
@@ -208,10 +171,6 @@ end, { desc = "Open diagnostics in loclist" })
 vim.api.nvim_create_user_command("RemoveComment", function()
     -- Сохраняем позицию курсора, чтобы он не улетел в начало файла
     local save_cursor = vim.fn.getpos(".")
-    
-    -- Выполняем замену: 
-    -- \_.\{-} — это "ленивый" поиск через любые символы включая переносы
-    -- 'e' в конце подавляет ошибку, если комментариев в файле нет
     vim.cmd([[%s/\/\*\_.\{-}\*\/\s*//gce]])
     
     -- Возвращаем курсор на место
@@ -219,12 +178,6 @@ vim.api.nvim_create_user_command("RemoveComment", function()
     
     print("Cleaned up! CSS comments removed.")
 end, { desc = "Удаляет все многострочные комментарии /* ... */ из текущего буфера" })
-  -- to remeber
-  --[[ map("n", "gd", vim.lsp.buf.definition, "LSP: Go to definition")
-  map("n", "gr", vim.lsp.buf.references, "LSP: References")
-  map("n", "K",  vim.lsp.buf.hover, "LSP: Hover")
-  map("n", "<leader>rn", vim.lsp.buf.rename, "LSP: Rename")
-  map("n", "<leader>ca", vim.lsp.buf.code_action, "LSP: Code action") ]]
 
 -- Создаем команду для ручного ввода: :MinuetModel qwen2.5-coder:7b
 vim.api.nvim_create_user_command('MinuetModel', function(opts)

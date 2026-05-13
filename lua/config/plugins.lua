@@ -80,8 +80,8 @@ require("lazy").setup({
     require('minuet').setup({
       provider = 'openai_fim_compatible',
       context_window = 1024,  -- начни с малого, увеличивай если хватает мощности
-      throttle = 400,         -- можно уменьшить для локальной модели
-      debounce = 300,
+      throttle = 600,         -- можно уменьшить для локальной модели
+      debounce = 500,
       --notify = 'debug',
       add_single_line_entry = true,
       
@@ -114,37 +114,6 @@ require("lazy").setup({
     })
   end,
 },
-  --[[ {
-  "milanglacier/minuet-ai.nvim",
-  config = function()
-    require('minuet').setup({
-      provider = 'openai_compatible', -- Используем этот провайдер
-      provider_options = {
-        temperature = 0.2,
-        openai_compatible = {
-          model = 'qwen2.5-coder:7b',
-          end_point = 'http://127.0.0.1:11434/v1/chat/completions',
-          name = 'Ollama',
-          stream = true,
-
-          stop = {
-            "<|endoftext|>",
-            "<|file_separator|>",
-            "\n\n",
-            "```"
-          },
-          optional = {
-            temperature = 0.2,
-            max_tokens = 64,
-          },
-        }
-      },
-      throttle = 80,
-      debounce = 120,
-      debug = false, -- ВКЛЮЧАЕМ ЛОГИ
-    })
-  end
-}, ]]
   -- LuaSnip
   {
     "L3MON4D3/LuaSnip",
