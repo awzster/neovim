@@ -24,6 +24,11 @@
     "body": [".map(el => {", "\t$1", "});"],
     "description": ".map()"
   },
+  "forEach": {
+    "prefix": ".forEach",
+    "body": [".forEach(${1|el,item,row|} => {", "\t$2", "});"],
+    "description": ".forEach()"
+  },
   "join": {
     "prefix": ".join",
     "body": [".map(el => el.id).join(',')"],
@@ -48,9 +53,9 @@
   "post (service call)": {
     "prefix": "post",
     "body": [
-      "let params = utilsService.prepareParams(${1:param});",
+      "let params = this.utilsService.prepareParams(${1:param});",
       "Object.assign(params, { dtType: '${2:load}' });",
-      "return mainService.httpPost(params).then(() => {",
+      "return this.mainService.httpPost(params).then(() => {",
       "  return this.${3:search}();",
       "});"
     ],
@@ -58,7 +63,11 @@
   },
   "get (service call)": {
     "prefix": "get",
-    "body": ["return mainService.httpGet({ dtType: '${1}' }).then(data => {", "  Object.assign(this, data)", "});"],
+    "body": [
+      "return this.mainService.httpGet({ dtType: '${1}' }).then(data => {",
+      "  Object.assign(this, data)",
+      "});"
+    ],
     "description": "HTTP GET + extend this"
   },
   "chain (batch update)": {
@@ -213,13 +222,13 @@
     "body": [
       "'use strict';",
       "",
-      "class ${1:Name}",
+      "class $1 extends Injectable",
       "{",
-      "  static \\$inject = [ '\\$scope', '\\$q', 'mainService' ];",
+      "  static \\$inject = [ '\\$scope', 'apiService' ];",
       "",
-      "  constructor(\\$scope, \\$q, ${2:mainService})",
+      "  constructor(...args)",
       "  {",
-      "    Object.assign(this, { \\$scope, \\$q, mainService });",
+      "    super(...args);",
       "",
       "    this.initEventListeners();",
       "  }",
@@ -231,15 +240,89 @@
       "",
       "  initEventListeners()",
       "  {",
-      "    this.\\$scope.\\$on('${2:eventName}', (event, data) =>",
+      "    this.\\$scope.\\$on('$2', (event, data) =>",
       "    {",
-      "      ${4:// logic}",
       "    });",
       "  };",
       "}",
       "",
-      "angular.module('app').controller('${1:Name}', ${1:Name});"
+      ".controller('$1', $1);"
     ],
     "description": "Create an AngularJS ES6 Class Controller (Allman style + EventListeners)"
+  },
+
+  "aget": {
+    "prefix": "aget",
+    "body": ["const data = await this.api.get({ dtType: '$1' });", "this.$2 = data;", "this.\\$scope.\\$apply();"],
+    "description": "Async GET with dtType"
+  },
+
+  "apost": {
+    "prefix": "apost",
+    "body": ["await this.api.post({ dtType: '$1', $2 });", "this.\\$scope.\\$apply();"],
+    "description": "Async POST with dtType"
+  },
+
+  "asbload": {
+    "prefix": "asbload",
+    "body": [
+      "async $1()",
+      "{",
+      "  const data = await this.api.get({ dtType: '$2' });",
+      "  this.$3 = data;",
+      "  this.\\$scope.\\$apply();",
+      "}"
+    ],
+    "description": "Async load method"
+  },
+
+  "asbcol": {
+    "prefix": "asbcol",
+    "body": ["ASBGrid.col('$1', '$2', '$3', { $4 }),"],
+    "description": "ASBGrid column"
+  },
+
+  "asba": {
+    "prefix": "asba",
+    "body": ["this.\\$scope.\\$apply();"],
+    "description": "$apply() shortcut"
+  },
+
+  "asbinj": {
+    "prefix": "asbinj",
+    "body": ["static $inject = ['\\$scope', '\\$q', '\\$timeout', 'apiService'];"],
+    "description": "Injectable dependencies"
+  },
+
+  "asbgrid": {
+    "prefix": "asbgrid",
+    "body": [
+      "initGridOptions(ctrl)",
+      "{",
+      "  return ASBGrid.options({",
+      "  columnDefs: this.initColumns(ctrl),",
+      "  onFilterChanged: ctrl.filterChanged",
+      "  });",
+      "}",
+      "",
+      "initColumns(ctrl)",
+      "{",
+      "  const columnDefs = [",
+      "    $1",
+      "    ASBGrid.col('Position', 'position_code', 'string', { width: 80 }),",
+      "    ASBGrid.col('Focus group(s)', 'fg_count', 'integer', { width: 80 }),",
+      "",
+      "    /* {",
+      "      headerName: '', field: 'checker', headerCheckboxSelection: true,",
+      "      headerCheckboxSelectionFilteredOnly: true, suppressMenu: true, width: 30",
+      "      checkboxSelection: params => params.data && !params.data.isTotal,",
+      "    }, */",
+      "  ];",
+      "",
+      "  this.calcService.setColumnDefs(columnDefs);",
+      "  return columnDefs;",
+      "}"
+    ],
+    "description": "AG Grid"
   }
 }

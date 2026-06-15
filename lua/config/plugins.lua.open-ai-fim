@@ -9,25 +9,22 @@ require("lazy").setup({
 
   -- базовые
   { "tpope/vim-surround" },
-  { "skywind3000/asyncrun.vim" },
-
-
   { "andymass/vim-matchup" },
   { "osyo-manga/vim-anzu" },
+  { "skywind3000/asyncrun.vim" },
   { "kshenoy/vim-signature" },
   { "othree/xml.vim" },
-
-  -- пары и теги
-  { "windwp/nvim-autopairs" },
-  { "windwp/nvim-ts-autotag", dependencies = "nvim-treesitter/nvim-treesitter" },
-
 
   -- treesitter
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   { "nvim-treesitter/nvim-treesitter-context" },
 
+  -- пары и теги
+  { "windwp/nvim-autopairs" },
+  { "windwp/nvim-ts-autotag", dependencies = "nvim-treesitter/nvim-treesitter" },
+
   -- темы
-  { "catppuccin/nvim", lazy = true, name = "catppuccin", priority = 1000 },
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   { "sainnhe/everforest", lazy = true, priority = 1000 },
   {
     "sainnhe/gruvbox-material",
@@ -77,32 +74,50 @@ require("lazy").setup({
   { "neovim/nvim-lspconfig" },
   { "williamboman/mason-lspconfig.nvim", dependencies = { "mason.nvim", "nvim-lspconfig" } },
 
-  {
+{
   "milanglacier/minuet-ai.nvim",
   config = function()
     require('minuet').setup({
+
+
       provider = 'openai_fim_compatible',
-      context_window = 1024,
-      throttle = 80,
-      debounce = 200,
+      context_window = 512,
+      throttle = 1000,
+      debounce = 800,
       notify = 'verbose',
       add_single_line_entry = true,
+      
+      virtualtext = {
+        auto_trigger_ft = { 'lua', 'html', 'js', 'css', 'vim', 'jsp', 'javascript', 'json' },
+        keymap = {
+          accept = '<A-A>',
+          accept_line = '<A-a>',
+          accept_n_lines = '<A-z>',
+          next = '<A-]>',
+          prev = '<A-[>',
+          dismiss = '<A-e>',
+        },
+      },
 
       provider_options = {
         openai_fim_compatible = {
           api_key = 'TERM',
           name = 'Ollama',
-          end_point = 'http://127.0.0.1:11434/v1/completions',  -- рабочий endpoint
+          end_point = 'http://127.0.0.1:11434/v1/completions',
           model = 'qwen2.5-coder:7b',
           stream = false,
-
           optional = {
-            max_tokens = 64,  -- уменьши для скорости
+            max_tokens = 48,
             top_p = 0.9,
+            temperature = 0.2,
+            stop = {
+              "\n\n",
+              "```",
+            },
           },
         },
       },
-
+      
     })
   end,
 },
