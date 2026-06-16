@@ -100,3 +100,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 })
 
 vim.o.updatetime = 300  -- 300 мс → popup появляется быстро
+  -- пары и теги
+  --{ "windwp/nvim-autopairs" },
+  --{ "windwp/nvim-ts-autotag", dependencies = "nvim-treesitter/nvim-treesitter" },
+

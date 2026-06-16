@@ -9,19 +9,23 @@ require("lazy").setup({
 
   -- базовые
   { "tpope/vim-surround" },
-  { "andymass/vim-matchup" },
-  { "osyo-manga/vim-anzu" },
   { "skywind3000/asyncrun.vim" },
-  { "kshenoy/vim-signature" },
-  { "othree/xml.vim" },
+
+-- навигация по парным элементам (if/else, скобки, теги)
+  { "andymass/vim-matchup" },
+
+  -- индикатор совпадений при поиске (2/15)
+  { "kevinhwang91/nvim-hlslens" },
+
+  -- автозакрытие скобок/кавычек (легче nvim-autopairs)
+  { "echasnovski/mini.pairs", version = false },
+
+  -- автозакрытие HTML/XML тегов (стабильнее ts-autotag для старых шаблонов)
+  { "alvan/vim-closetag" },
 
   -- treesitter
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   { "nvim-treesitter/nvim-treesitter-context" },
-
-  -- пары и теги
-  { "windwp/nvim-autopairs" },
-  { "windwp/nvim-ts-autotag", dependencies = "nvim-treesitter/nvim-treesitter" },
 
   -- темы
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
