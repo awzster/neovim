@@ -253,13 +253,18 @@
 
   "aget": {
     "prefix": "aget",
-    "body": ["const data = await this.api.get({ dtType: '$1' });", "this.$2 = data;", "this.\\$scope.\\$apply();"],
+    "body": ["this.$1 = await this.api.get({ dtType: '2' });", "this.\\$scope.\\$apply();"],
     "description": "Async GET with dtType"
   },
 
   "apost": {
     "prefix": "apost",
-    "body": ["await this.api.post({ dtType: '$1', $2 });", "this.\\$scope.\\$apply();"],
+    "body": [
+      "const params = this.utilsService.prepareParams(${1:param});",
+      "Object.assign(params, { dtType: '${$2}' });",
+      "await this.api.post(params);",
+      "this.load()"
+    ],
     "description": "Async POST with dtType"
   },
 
@@ -268,8 +273,7 @@
     "body": [
       "async $1()",
       "{",
-      "  const data = await this.api.get({ dtType: '$2' });",
-      "  this.$3 = data;",
+      "  this.$2 = await this.api.get({ dtType: '$3' });",
       "  this.\\$scope.\\$apply();",
       "}"
     ],
@@ -278,7 +282,7 @@
 
   "asbcol": {
     "prefix": "asbcol",
-    "body": ["ASBGrid.col('$1', '$2', '$3', { $4 }),"],
+    "body": ["ASBGrid.col('$1', '$2', '$3', { width: $4 }),"],
     "description": "ASBGrid column"
   },
 

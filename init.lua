@@ -97,7 +97,6 @@ local config_modules = {
   "ui",
   "lsp",
   "treesitter",
-  "autopairs_autotag",
   "conform",
   "diagnostics",
   "ai_simple",
@@ -142,13 +141,13 @@ function _G.MergeCurrentBuffer()
   vim.cmd("update")
   local filename = vim.fn.expand("%:t")
   local filepath = vim.fn.expand("%:p:h")
-  vim.cmd("AsyncRun copy2dev.sh " .. filename .. " " .. filepath)
+  vim.cmd("AsyncRun copy2dev-scp.sh " .. filename .. " " .. filepath)
   vim.notify("Merged: " .. filename, vim.log.levels.INFO)
 end
 
 function _G.MergeAllBuffers()
   local current_buf = vim.fn.bufnr("%")
-  vim.cmd("bufdo !copy2dev.sh %:t %:p:h")
+  vim.cmd("bufdo !copy2dev-scp.sh %:t %:p:h")
   vim.cmd("buffer " .. current_buf)
 end
 
