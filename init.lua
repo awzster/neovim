@@ -275,3 +275,82 @@ local function setup_context_colors()
 end
 setup_context_colors()
 vim.api.nvim_create_autocmd("ColorScheme", { callback = setup_context_colors })
+
+-- ============================================
+-- Управление размером шрифта в Neovim-Qt
+-- ============================================
+
+local M = {}
+
+-- Базовый размер шрифта (для сброса)
+M.base_font_size = 12
+
+-- Получить текущий размер шрифта из guifont
+function M.get_font_size()
+  local font = vim.o.guifont or ""
+  local size = font:match(":h(%d+)")
+  return tonumber(size) or M.base_font_size
+end
+
+-- Установить новый размер шрифта
+function M.set_font_size(size)
+  size = math.max(6, math.min(size, 72)) -- ограничим 6..72
+  local font = vim.o.guifont or ""
+  if font:find(":h%d+") then
+    font = font:gsub(":h%d+", ":h" .. size)
+  else
+    font = font .. ":h" .. size
+  end
+  vim.o.guifont = font
+  vim.notify("Font size: " .. size, vim.log.levels.INFO)
+end
+
+-- Увеличить
+function M.increase()
+  M.set_font_size(M.get_font_size() + 1)
+end
+
+-- Уменьшить
+function M.reduce()
+  M.set_font_size(M.get_font_size() - 1)
+end
+
+-- Сброс
+function M.reset()
+  M.set_font_size(M.base_font_size)
+end
+
+-- ============================================
+-- Команды
+-- ============================================
+
+vim.api.nvim_create_user_command("IncreaseFontSize", M.increase, {})
+vim.api.nvim_create_user_command("ReduceFontSize", M.reduce, {})
+vim.api.nvim_create_user_command("ResetFontSize", M.reset, {})
+
+-- ============================================
+-- Клавиши (опционально, если вдруг заработают)
+-- ============================================
+
+-- Пробуем через <C-=> вместо <C-S-+> — иногда ловится лучше
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-=>', M.increase,
+  { silent = true, desc = 'Increase font size' })
+
+-- <C--> часто работает лучше чем <C-S-->
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-->', M.reduce,
+  { silent = true, desc = 'Reduce font size' })
+
+-- Сброс
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-0>', M.reset,
+  { silent = true, desc = 'Reset font size' })
+
+-- ============================================
+-- Инициализация: запомнить начальный размер
+-- ============================================
+
+M.current_size = M.get_font_size()
+if M.current_size ~= M.base_font_size then
+  M.base_font_size = M.current_size -- если в guifont уже задан другой размер
+end
+
+return M

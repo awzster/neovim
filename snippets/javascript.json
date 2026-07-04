@@ -253,7 +253,7 @@
 
   "aget": {
     "prefix": "aget",
-    "body": ["this.$1 = await this.api.get({ dtType: '2' });", "this.\\$scope.\\$apply();"],
+    "body": ["this.$1 = await this.api.get({ dtType: '$2' });", "this.\\$scope.\\$apply();"],
     "description": "Async GET with dtType"
   },
 
@@ -261,7 +261,7 @@
     "prefix": "apost",
     "body": [
       "const params = this.utilsService.prepareParams(${1:param});",
-      "Object.assign(params, { dtType: '${$2}' });",
+      "Object.assign(params, { dtType: '$2' });",
       "await this.api.post(params);",
       "this.load()"
     ],
