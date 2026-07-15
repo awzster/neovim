@@ -85,11 +85,12 @@ vim.keymap.set("x", "p", [["_dP]], { desc = "Paste without yank" })
 vim.keymap.set("n", "<F2>", "bve", { desc = "Select word" })
 --map("n", "<leader>p", "`[v`]")
 
+
 local utils = require("config.utils")
 -- lualine
 require('lualine').setup({
   options = {
-    theme = 'catppuccin',
+    theme = 'auto',
     section_separators = { left = '', right = '' },
     component_separators = { left = '', right = '' },
   },
@@ -179,57 +180,4 @@ vim.api.nvim_create_user_command("RemoveComment", function()
     print("Cleaned up! CSS comments removed.")
 end, { desc = "Удаляет все многострочные комментарии /* ... */ из текущего буфера" })
 
--- Создаем команду для ручного ввода: :MinuetModel qwen2.5-coder:7b
-vim.api.nvim_create_user_command('MinuetModel', function(opts)
-    change_minuet_model(opts.args)
-end, { nargs = 1 })
 
--- Выбор модели Ollama для Minuet через Telescope
-vim.keymap.set('n', '<leader>om', function()
-    local pickers = require("telescope.pickers")
-    local finders = require("telescope.finders")
-    local conf = require("telescope.config").values
-    local actions = require("telescope.actions")
-    local action_state = require("telescope.actions.state")
-    local utils = require("config.utils")
-
-    --local models = { "crow-coder", "qwen2.5-coder:7b", "codellama" }
-
--- Получаем список моделей прямо из Ollama
-    local models = {}
-    -- Команда берет вывод 'ollama list', пропускает заголовок и забирает первую колонку
-    local handle = io.popen("ollama list | tail -n +2 | awk '{print $1}'")
-    if handle then
-        for line in handle:lines() do
-            if line ~= "" then table.insert(models, line) end
-        end
-        handle:close()
-    end
-
-    -- На случай, если Ollama не запущена или моделей нет
-    if #models == 0 then 
-        models = { "qwen2.5-coder:7b" } 
-    end
-
-    pickers.new({}, {
-        prompt_title = "🤖 Select AI Model",
-        finder = finders.new_table { results = models },
-        sorter = conf.generic_sorter({}),
-        attach_mappings = function(prompt_bufnr, map)
-            actions.select_default:replace(function()
-                local selection = action_state.get_selected_entry()
-                local model_name = selection[1]
-
-                -- 1. Сначала закрываем Telescope
-                actions.close(prompt_bufnr)
-
-                -- 2. Откладываем выполнение логики до следующего тика Neovim
-                -- Это позволит Treesitter-context и другим плагинам успокоиться
-                vim.schedule(function()
-                    utils.change_minuet_model(model_name)
-                end)
-            end)
-            return true
-        end,
-    }):find()
-end, { desc = "Telescope: Change Ollama model" })

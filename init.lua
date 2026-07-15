@@ -11,20 +11,22 @@
 vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
 vim.opt.clipboard = "unnamedplus"
+vim.api.nvim_set_option("clipboard", "unnamedplus")
 
--- Clipboard xclip
-vim.g.clipboard = {
-  name = "xclip",
-  copy = {
-    ["+"] = "xclip -selection clipboard",
-    ["*"] = "xclip -selection primary",
-  },
-  paste = {
-    ["+"] = "xclip -selection clipboard -o",
-    ["*"] = "xclip -selection primary -o",
-  },
-  cache_enabled = 1,
-}
+-- p и P обрезают trailing newline из системного буфера
+--[[ vim.keymap.set("n", "p", function()
+  local reg = vim.fn.getreg("+")
+  reg = reg:gsub("\n$", "")  -- убрать trailing \n
+  vim.fn.setreg("+", reg, "v")  -- force character-wise
+  return '"+p'
+end, { noremap = true, expr = true })
+
+vim.keymap.set("n", "P", function()
+  local reg = vim.fn.getreg("+")
+  reg = reg:gsub("\n$", "")
+  vim.fn.setreg("+", reg, "v")
+  return '"+P'
+end, { noremap = true, expr = true }) ]]
 
 -- Отступы
 vim.opt.tabstop = 2
@@ -68,11 +70,6 @@ vim.opt.writebackup = true ]]
 vim.opt.foldmethod = "indent"
 vim.opt.foldcolumn = "1"
 vim.opt.foldlevelstart = 99
-
---[[ -- GUI
-if vim.fn.has("gui_running") == 1 then
-  vim.opt.guifont = "FiraCode Nerd Font Mono:h17"
-end ]]
 
 -- ═══════════════════════════════════════════════════════════
 -- 3. ФАЙЛТАЙПЫ
@@ -163,6 +160,16 @@ function _G.TabToSpace()
   vim.fn.winrestview(save)
 end
 
+function _G.MergeCurrentBufferExplicit()
+  vim.cmd("update")
+
+  local filename = vim.fn.expand("%:t")
+  local filepath = vim.fn.expand("%:p:h")
+
+  -- Выполняем через :! — вывод видно в командной строке
+  vim.cmd(string.format("!copy2dev-scp.sh %s %s", filename, vim.fn.shellescape(filepath)))
+end
+
 -- ═══════════════════════════════════════════════════════════
 -- 7. KEYMAPS
 -- ═══════════════════════════════════════════════════════════
@@ -216,6 +223,7 @@ end, { expr = true })
 -- Shift+Insert
 map("c", "<S-Insert>", "<C-r>+")
 
+vim.keymap.set('n', ';w', ':lua MergeCurrentBufferExplicit()<CR>', { noremap = true, silent = false })
 -- ═══════════════════════════════════════════════════════════
 -- 8. АВТОКОМАНДЫ
 -- ═══════════════════════════════════════════════════════════
@@ -251,7 +259,13 @@ vim.cmd("colorscheme gruvbox-material")
 
 -- GUI
 if vim.fn.has("gui_running") == 1 then
-  vim.opt.guifont = "FiraCode Nerd Font Mono:h15"
+ vim.opt.guifont = "FiraCode Nerd Font Mono:h13"
+
+-- vim.opt.guifont = "Fira Code:h13"
+-- vim.opt.guifont = "JetBrains Mono:h13"
+-- vim.opt.guifont = "Cascadia Code:h13"
+-- vim.opt.guifont = "Geist Mono:h13"
+-- vim.opt.guifont = "Maple Mono:h13"
 end
 
 -- Определяем кастомные группы подсветки для cmp

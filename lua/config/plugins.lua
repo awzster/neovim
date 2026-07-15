@@ -31,7 +31,7 @@ require("lazy").setup({
   { "nvim-treesitter/nvim-treesitter-context" },
 
   -- темы
-  { "catppuccin/nvim", lazy = true, name = "catppuccin", priority = 1000 },
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   { "sainnhe/everforest", lazy = true, priority = 1000 },
   {
     "sainnhe/gruvbox-material",
@@ -65,6 +65,7 @@ require("lazy").setup({
     end,
   },
 
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   -- UI
   { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
   { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
@@ -97,7 +98,7 @@ require("lazy").setup({
           api_key = 'TERM',
           name = 'Ollama',
           end_point = 'http://127.0.0.1:11434/v1/completions',  -- рабочий endpoint
-          model = 'qwen2.5-coder:7b',
+          model = 'qwen2.5-coder:latest',
           stream = false,
 
           optional = {
@@ -123,7 +124,6 @@ require("lazy").setup({
       })
     end
   },
-
   -- Comment
   {
     "numToStr/Comment.nvim",
