@@ -10,18 +10,15 @@ require("lazy").setup({
   -- базовые
   { "tpope/vim-surround" },
   { "skywind3000/asyncrun.vim" },
-  { "vim-scripts/xml.vim" },
+  { "vim-scripts/xml.vim", lazy = false },
 
 -- навигация по парным элементам (if/else, скобки, теги)
   { "andymass/vim-matchup" },
 
-  -- индикатор совпадений при поиске (2/15)
+  -- автозакрытие скобок/кавычек
   { "echasnovski/mini.pairs", version = false, config = function()
     require('mini.pairs').setup()
   end },
-
-  -- автозакрытие скобок/кавычек (легче nvim-autopairs)
-  { "echasnovski/mini.pairs", version = false },
 
   -- автозакрытие HTML/XML тегов (стабильнее ts-autotag для старых шаблонов)
   { "alvan/vim-closetag" },
@@ -65,7 +62,6 @@ require("lazy").setup({
     end,
   },
 
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   -- UI
   { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
   { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
@@ -82,35 +78,6 @@ require("lazy").setup({
   { "neovim/nvim-lspconfig" },
   { "williamboman/mason-lspconfig.nvim", dependencies = { "mason.nvim", "nvim-lspconfig" } },
 
-  {
-  "milanglacier/minuet-ai.nvim",
-  config = function()
-    require('minuet').setup({
-      provider = 'openai_fim_compatible',
-      context_window = 1024,
-      throttle = 80,
-      debounce = 200,
-      notify = 'verbose',
-      add_single_line_entry = true,
-
-      provider_options = {
-        openai_fim_compatible = {
-          api_key = 'TERM',
-          name = 'Ollama',
-          end_point = 'http://127.0.0.1:11434/v1/completions',  -- рабочий endpoint
-          model = 'qwen2.5-coder:latest',
-          stream = false,
-
-          optional = {
-            max_tokens = 64,  -- уменьши для скорости
-            top_p = 0.9,
-          },
-        },
-      },
-
-    })
-  end,
-},
   -- LuaSnip
   {
     "L3MON4D3/LuaSnip",

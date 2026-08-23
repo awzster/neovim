@@ -110,19 +110,10 @@ return {
       },
       
 sources = {
---[[         default = { 'snippets', 'minuet', 'buffer', 'lsp', 'path' }, ]]
         default = { 'snippets', 'buffer', 'lsp', 'path' },
         
         providers =
         {
-          --[[ minuet =
-          {
-            max_items = 3,
-            name = 'minuet',
-            module = 'minuet.blink',
-            score_offset = 90,
-          }, ]]
-
           buffer =
           {
             max_items = 5,

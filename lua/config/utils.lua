@@ -1,7 +1,5 @@
 local M = {}
 
-M.current_ai_model = "qwen2.5-coder:7b" -- Дефолтное значение
-
 -- 🚀 Оптимизация nvm PATH
 -- Ищем последнюю версию Node.js один раз при загрузке
 local home = os.getenv("HOME")
@@ -45,42 +43,6 @@ M.char_code = function()
         return string.format("U+%04X", cp)
     end
     return ""
-end
-
--- 🤖 AI: Смена модели Ollama для Minuet
-M.change_minuet_model = function(model_name)
-    local ok, minuet = pcall(require, 'minuet')
-    if not ok then
-        vim.notify("Minuet plugin not found", vim.log.levels.ERROR)
-        return
-    end
-
-    M.current_ai_model = model_name -- Запоминаем выбор
-
-    minuet.setup({
-        -- Используем правильное имя провайдера
-        provider = 'openai_compatible', 
-        provider_options = {
-            openai_compatible = {
-                model = model_name,
-                end_point = 'http://127.0.0.1:11434/v1/chat/completions',
-                name = 'Ollama',
-                stream = true,
-                optional = {
-                    max_tokens = 256,
-                    top_p = 0.9,
-                    temperature = 0.2,
-                },
-            }
-        }
-    })
-    
-    vim.notify("AI Model (Ollama): " .. model_name, vim.log.levels.INFO, { title = "Minuet" })
-end
-
--- Функция для Lualine
-M.get_ai_status = function()
-    return "🤖 " .. M.current_ai_model
 end
 
 return M

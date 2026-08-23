@@ -99,7 +99,7 @@ require('lualine').setup({
     lualine_b = { 'branch', 'diff' },
     lualine_c = { utils.filename_with_bufnr },
     --lualine_c = { 'buffers' },
-    lualine_x = { utils.get_ai_status, 'encoding', 'fileformat', 'filetype' },
+    lualine_x = { 'encoding', 'fileformat', 'filetype' },
     lualine_y = { 'progress' },
     lualine_z = { 'location', utils.char_code },
   },

@@ -4,6 +4,9 @@
 -- ═══════════════════════════════════════════════════════════
 -- 1. LEADER
 -- ═══════════════════════════════════════════════════════════
+vim.g.mapleader = "\\"
+vim.g.maplocalleader = vim.g.mapleader
+--vim.g.maplocalleader = " "
 
 -- ═══════════════════════════════════════════════════════════
 -- 2. БАЗОВЫЕ ОПЦИИ
@@ -11,22 +14,6 @@
 vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
 vim.opt.clipboard = "unnamedplus"
-vim.api.nvim_set_option("clipboard", "unnamedplus")
-
--- p и P обрезают trailing newline из системного буфера
---[[ vim.keymap.set("n", "p", function()
-  local reg = vim.fn.getreg("+")
-  reg = reg:gsub("\n$", "")  -- убрать trailing \n
-  vim.fn.setreg("+", reg, "v")  -- force character-wise
-  return '"+p'
-end, { noremap = true, expr = true })
-
-vim.keymap.set("n", "P", function()
-  local reg = vim.fn.getreg("+")
-  reg = reg:gsub("\n$", "")
-  vim.fn.setreg("+", reg, "v")
-  return '"+P'
-end, { noremap = true, expr = true }) ]]
 
 -- Отступы
 vim.opt.tabstop = 2
@@ -96,7 +83,7 @@ local config_modules = {
   "treesitter",
   "conform",
   "diagnostics",
-  "ai_simple",
+  "kimi",
 }
 
 for _, module in ipairs(config_modules) do
@@ -366,5 +353,3 @@ M.current_size = M.get_font_size()
 if M.current_size ~= M.base_font_size then
   M.base_font_size = M.current_size -- если в guifont уже задан другой размер
 end
-
-return M

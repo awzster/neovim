@@ -42,20 +42,10 @@ end
 vim.api.nvim_create_autocmd("ColorScheme", { callback = set_diagnostic_highlights })
 set_diagnostic_highlights()
 
--- Регистрация знаков с иконками
-for severity, icon in pairs(severity_icons) do
-  vim.fn.sign_define("DiagnosticSign" .. vim.diagnostic.severity[severity]:gsub("^%l", string.upper), {
-    text = icon,
-    texthl = "DiagnosticSign" .. vim.diagnostic.severity[severity]:gsub("^%l", string.upper),
-    linehl = "",
-    numhl = "",
-  })
-end
-
 -- Основная конфигурация диагностики (БЕЗ virtual_text!)
 vim.diagnostic.config({
   virtual_text = false,        -- ✅ отключено
-  signs = true,                -- ✅ знаки включены
+  signs = { text = severity_icons }, -- ✅ знаки с иконками
   underline = true,            -- ✅ подчёркивание включено
   update_in_insert = false,
   severity_sort = true,
@@ -100,7 +90,4 @@ vim.api.nvim_create_autocmd("CursorHold", {
 })
 
 vim.o.updatetime = 300  -- 300 мс → popup появляется быстро
-  -- пары и теги
-  --{ "windwp/nvim-autopairs" },
-  --{ "windwp/nvim-ts-autotag", dependencies = "nvim-treesitter/nvim-treesitter" },
 
