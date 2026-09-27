@@ -35,6 +35,7 @@ vim.opt.breakindentopt = "shift:2,min:4,sbr"
 vim.opt.showbreak = ">>"
 vim.opt.list = true
 vim.opt.listchars = { tab = "| ", trail = "-" }
+vim.opt.fileformats = { "unix", "dos" }
 
 -- Поиск
 vim.opt.ignorecase = true
@@ -48,10 +49,11 @@ vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath("config") .. "/undo/"
 vim.opt.undolevels = 10000
 vim.opt.undoreload = 10000
-vim.opt.backup = false
---[[ vim.opt.backupdir = vim.fn.stdpath("config") .. "/backup/"
+vim.opt.backup = true
+vim.opt.backupdir = vim.fn.stdpath("config") .. "/backup/"
 vim.opt.backupcopy = "yes"
-vim.opt.writebackup = true ]]
+vim.opt.writebackup = true
+vim.opt.swapfile = false
 
 -- Фолды
 vim.opt.foldmethod = "indent"
@@ -242,7 +244,9 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
   command = "checktime",
 })
 
-vim.cmd("colorscheme gruvbox-material")
+--vim.cmd("colorscheme gruvbox-material")
+vim.o.background = "dark"
+vim.cmd.colorscheme("gruvbox-material")
 
 -- GUI
 if vim.fn.has("gui_running") == 1 then
@@ -353,3 +357,10 @@ M.current_size = M.get_font_size()
 if M.current_size ~= M.base_font_size then
   M.base_font_size = M.current_size -- если в guifont уже задан другой размер
 end
+
+if vim.g.neovide then
+    vim.g.neovide_cursor_animation_length = 0
+end
+
+
+

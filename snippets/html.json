@@ -31,31 +31,29 @@
     ],
     "description": "Bootstrap-like panel"
   },
-  "row": {
-    "prefix": "row",
-    "body": [
-      "<div class=\"row h-2-2\">",
-      "  <div class=\"col-xs-5 text-right\">$1</div>",
-      "  <div class=\"col-xs-10\">",
-      "  </div>",
-      "</div>"
-    ],
-    "description": "Form row (5/10 cols)"
-  },
-  "rowe": {
-    "prefix": "rowe",
-    "body": [
-      "<div class=\"row\">",
-      "  <div class=\"col-xs-5 text-right\">$1</div>",
-      "  <div class=\"col-xs-10\">",
-      "    $2",
-      "  </div>",
-      "</div>"
-    ],
-    "description": "Form row with content"
-  },
   "ng-modal": {
-    "prefix": "ng-modal",
+    "prefix": "ng-modal-ext",
+    "body": [
+      "<modal-dialog-ext show=\"vm.$1\" dialog-title=\"$2\" ng-modal-class=\"ng-modal-md\" ng-cloak>",
+      "  <form name=\"vm.$1Form\" ng-submit=\"vm.$1Submit()\">",
+
+      "     <div class=\"ng-modal-ext-layout\">",
+      "        <div class=\"ng-modal-ext-body\">",
+      "        $3",
+      "        </div>",
+      "        <div class=\"ng-modal-ext-footer\">",
+      "          <button class=\"btn btn-primary\" type=\"submit\">Save</button>",
+      "          <button class=\"btn btn-default\" ng-click=\"vm.$1 = false\" type=\"button\"> Close </button>",
+      "        </div>",
+      "      </div>",
+      "  </form>",
+      "</modal-dialog-ext>"
+    ],
+    "description": "Custom modal dialog"
+  },
+
+  "ng-modal-old": {
+    "prefix": "ng-modal-old",
     "body": [
       "<modal-dialog show=\"vm.$1DlgShow\" dialog-title=\"$2\" ng-modal-class=\"ng-modal-md\" ng-cloak>",
       "  <form name=\"vm.$1Form\" ng-submit=\"vm.$1Submit()\">",
@@ -76,7 +74,7 @@
       "  </form>",
       "</modal-dialog>"
     ],
-    "description": "Custom modal dialog"
+    "description": "Custom modal dialog (old)"
   },
   "ng-select": {
     "prefix": "ng-select",

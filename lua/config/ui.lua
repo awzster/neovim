@@ -17,6 +17,8 @@ require("nvim-tree").setup({
 -- ═══════════════════════════════════════════════════════════
 local telescope = require("telescope")
 local builtin = require("telescope.builtin")
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
 
 telescope.setup({
   defaults = {
@@ -30,8 +32,30 @@ telescope.setup({
       "--line-number", "--column", "--smart-case",
     },
   },
-})
 
+  pickers = {
+    live_grep = {
+      mappings = {
+        i = {
+          ["<CR>"] = function(prompt_bufnr)
+            local picker = action_state.get_current_picker(prompt_bufnr)
+            local pattern = picker:_get_prompt()
+
+            actions.select_default(prompt_bufnr)
+
+            if pattern ~= "" then
+              vim.fn.setreg("/", pattern)
+              vim.opt.hlsearch = true
+            end
+          end,
+        },
+      },
+    },
+  },
+
+
+
+})
 -- Extensions
 telescope.load_extension("aerial")
 require('telescope').load_extension('fzf')
@@ -41,15 +65,60 @@ vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live grep" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Buffers" })
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help" })
 
+
+
+
+-- -- Поиск слова под курсором (Normal mode) или выделения (Visual mode)
+-- vim.keymap.set({ "n", "v" }, "<leader>fs", builtin.grep_string, { desc = "Grep selection/word" })
+--
+-- -- Поиск слова под курсором ТОЛЬКО в открытых буферах
+-- vim.keymap.set("n", "<leader>fS", function()
+--   require('telescope.builtin').grep_string({ 
+--     grep_open_files = true 
+--   })
+-- end, { desc = "Telescope: Search word under cursor in open buffers" })
+
+-- grep_string + сохранение паттерна для последующего n/N
+local function grep_string_with_search(opts)
+  opts = opts or {}
+
+  local pattern
+
+  if vim.fn.mode() == "v" or vim.fn.mode() == "V" then
+    -- Visual mode: выделенный текст
+    vim.cmd('normal! "vy')
+    pattern = vim.fn.getreg("v")
+  else
+    -- Normal mode: слово под курсором
+    pattern = vim.fn.expand("<cword>")
+  end
+
+  if pattern == "" then
+    return
+  end
+
+  -- Сохраняем как обычный Vim search pattern
+  vim.fn.setreg("/", "\\V" .. vim.fn.escape(pattern, "\\"))
+  vim.opt.hlsearch = true
+
+  opts.search = pattern
+  builtin.grep_string(opts)
+end
+
 -- Поиск слова под курсором (Normal mode) или выделения (Visual mode)
-vim.keymap.set({ "n", "v" }, "<leader>fs", builtin.grep_string, { desc = "Grep selection/word" })
+vim.keymap.set({ "n", "v" }, "<leader>fs", function()
+  grep_string_with_search()
+end, { desc = "Grep selection/word" })
 
 -- Поиск слова под курсором ТОЛЬКО в открытых буферах
 vim.keymap.set("n", "<leader>fS", function()
-  require('telescope.builtin').grep_string({ 
-    grep_open_files = true 
+  grep_string_with_search({
+    grep_open_files = true
   })
 end, { desc = "Telescope: Search word under cursor in open buffers" })
+
+
+
 
 vim.keymap.set("n", "<leader>fa", function()
   telescope.extensions.aerial.aerial()

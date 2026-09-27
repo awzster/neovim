@@ -101,58 +101,117 @@
     ],
     "description": "scope.$watch"
   },
+
   "swal-confirm": {
     "prefix": "swal-confirm",
     "body": [
-      "return new swal({",
-      "  title: 'Confirmarion',",
+      "const result = await Swal.fire({",
+      "  title: 'Confirmation',",
       "  text: 'Are you sure to $1?',",
-      "  heightAuto: false,",
-      "  icon: 'question',",
+      "  icon: 'warning',",
       "  showCancelButton: true,",
       "  confirmButtonText: 'OK',",
-      "  cancelButtonText: 'Cancel' }).then((value) => {",
-      "  if (value.isConfirmed)",
-      "  {",
-      "    $2",
-      "  }",
-      "});"
+      "  cancelButtonText: 'Cancel'",
+      "});",
+      "",
+      "if (result.isConfirmed) {",
+      "  $2",
+      "}"
     ],
     "description": "SweetAlert confirm dialog"
   },
+
   "swal-error": {
     "prefix": "swal-error",
-    "body": "return new swal({ title: 'Error!', text: '$1', icon: 'error' });",
+    "body": [
+      "await Swal.fire({",
+      "  title: 'Error!',",
+      "  text: '$1',",
+      "  icon: 'error',",
+      "  confirmButtonText: 'OK'",
+      "});"
+    ],
     "description": "SweetAlert error"
   },
+
   "swal-success": {
     "prefix": "swal-success",
-    "body": ["return new swal({ title: 'Success!', text: '$1', icon: 'success' }).then(() => {", "  $2", "});"],
+    "body": [
+      "await Swal.fire({",
+      "  title: 'Success!',",
+      "  text: '$1',",
+      "  icon: 'success',",
+      "  confirmButtonText: 'OK'",
+      "});",
+      "$2"
+    ],
     "description": "SweetAlert success"
   },
+
   "swal-input": {
     "prefix": "swal-input",
     "body": [
-      "return new swal({",
-      "  title: 'Clone program',",
+      "const result = await Swal.fire({",
+      "  title: '$1',",
       "  input: 'text',",
-      "  heightAuto: false,",
-      "  inputLabel: 'Program name',",
+      "  inputLabel: '$2',",
       "  icon: 'question',",
       "  showCancelButton: true,",
       "  confirmButtonText: 'OK',",
-      "  cancelButtonText: 'Cancel' }).then((value) => {",
-      "  if (value.isConfirmed && value.value)",
-      "  {",
-      "  $1",
-      "  }",
-      "});"
+      "  cancelButtonText: 'Cancel'",
+      "});",
+      "",
+      "if (result.isConfirmed && result.value) {",
+      "  $3",
+      "}"
     ],
     "description": "SweetAlert with input"
   },
+  "swal-remove": {
+    "prefix": "swal-remove",
+    "body": [
+      "const result = await Swal.fire({",
+      "  title: 'Remove $1?',",
+      "  text: $2 || '',",
+      "  icon: 'warning',",
+      "  showCancelButton: true,",
+      "  confirmButtonText: 'Remove',",
+      "  cancelButtonText: 'Cancel',",
+      "  confirmButtonColor: '#d33'",
+      "});",
+      "",
+      "if (!result.isConfirmed) return;",
+      "",
+      "$3"
+    ],
+    "description": "SweetAlert remove confirmation"
+  },
+  "swal-info": {
+    "prefix": "swal-info",
+    "body": [
+      "await Swal.fire({",
+      "  title: '$1',",
+      "  text: '$2',",
+      "  icon: 'info',",
+      "  confirmButtonText: 'OK'",
+      "});"
+    ],
+    "description": "SweetAlert info"
+  },
+
   "try-catch": {
     "prefix": "try",
-    "body": ["try", "{", "\t${TM_SELECTED_TEXT}", "}", "catch (e) {", "console.warn(`Error in $0:`, e);", "}"],
+    "body": [
+      "try",
+      "{",
+      "  ${TM_SELECTED_TEXT}",
+      "}",
+      "catch (e) {",
+      "  console.warn(`Error in $0:`, e);",
+      "}",
+      "finally {",
+      "}"
+    ],
     "description": "Wrap selection in try-catch"
   },
   "assign": {
@@ -244,6 +303,12 @@
       "    {",
       "    });",
       "  }",
+
+      "apply()",
+      "{",
+      "  if (!this.$scope.$$phase)",
+      "    this.$scope.$apply();",
+      "}",
       "}",
       "",
       ".controller('$1', $1);"
