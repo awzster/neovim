@@ -108,7 +108,7 @@
       "const result = await Swal.fire({",
       "  title: 'Confirmation',",
       "  text: 'Are you sure to $1?',",
-      "  icon: 'warning',",
+      "  icon: 'question',",
       "  showCancelButton: true,",
       "  confirmButtonText: 'OK',",
       "  cancelButtonText: 'Cancel'",
@@ -121,30 +121,20 @@
     "description": "SweetAlert confirm dialog"
   },
 
+  "swal-info": {
+    "prefix": "swal-info",
+    "body": ["await Swal.fire({ title: '$1',  text: '$2',  icon: 'info',  confirmButtonText: 'OK' });"],
+    "description": "SweetAlert info"
+  },
   "swal-error": {
     "prefix": "swal-error",
-    "body": [
-      "await Swal.fire({",
-      "  title: 'Error!',",
-      "  text: '$1',",
-      "  icon: 'error',",
-      "  confirmButtonText: 'OK'",
-      "});"
-    ],
+    "body": ["await Swal.fire({ title: 'Error!',  text: '$1',  icon: 'error',  confirmButtonText: 'OK' });"],
     "description": "SweetAlert error"
   },
 
   "swal-success": {
     "prefix": "swal-success",
-    "body": [
-      "await Swal.fire({",
-      "  title: 'Success!',",
-      "  text: '$1',",
-      "  icon: 'success',",
-      "  confirmButtonText: 'OK'",
-      "});",
-      "$2"
-    ],
+    "body": ["await Swal.fire({ title: 'Success!',  text: '$1', icon: 'success', confirmButtonText: 'OK' });"],
     "description": "SweetAlert success"
   },
 
@@ -185,18 +175,6 @@
       "$3"
     ],
     "description": "SweetAlert remove confirmation"
-  },
-  "swal-info": {
-    "prefix": "swal-info",
-    "body": [
-      "await Swal.fire({",
-      "  title: '$1',",
-      "  text: '$2',",
-      "  icon: 'info',",
-      "  confirmButtonText: 'OK'",
-      "});"
-    ],
-    "description": "SweetAlert info"
   },
 
   "try-catch": {
@@ -361,6 +339,12 @@
     "prefix": "asbinj",
     "body": ["static $inject = ['\\$scope', '\\$q', '\\$timeout', 'apiService'];"],
     "description": "Injectable dependencies"
+  },
+
+  "applyAsync": {
+    "prefix": "apply",
+    "body": ["this.\\$scope.\\$applyAsync();"],
+    "description": "this.$scope.$applyAsync();"
   },
 
   "asbgrid": {

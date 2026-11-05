@@ -116,7 +116,7 @@ sources = {
         {
           buffer =
           {
-            max_items = 5,
+            max_items = 4,
             name = 'Buffer',
             module = 'blink.cmp.sources.buffer',
             opts = {
@@ -133,10 +133,11 @@ sources = {
           
           lsp =
           {
-            max_items = 8,
+            max_items = 6,
             name = 'LSP',
             module = 'blink.cmp.sources.lsp',
-            score_offset = 10,
+            min_keyword_length = 2,
+            score_offset = 80,
           },
           
           snippets =
@@ -144,7 +145,8 @@ sources = {
             max_items = 3,
             name = 'Snippets',
             module = 'blink.cmp.sources.snippets',
-            score_offset = 95,
+            min_keyword_length = 2,
+            score_offset = 100,
           },
         },
       },

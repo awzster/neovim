@@ -167,5 +167,10 @@
       "}"
     ],
     "description": "Import statement"
+  },
+  "log (JSP)": {
+    "prefix": "log",
+    "body": "com.asbis.util.Logger.log( \"\\t4za: \" + $1);",
+    "description": "Custom logger"
   }
 }

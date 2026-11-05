@@ -66,7 +66,11 @@ vim.opt.foldlevelstart = 99
 vim.filetype.add({
   extension = {
     xsl = "xml",
-    jsp = "jsp",
+    jsp = "java",
+  },
+  filename = {
+    ["dataHelper.jsp"] = "jsp",
+    ["index.jsp"] = "jsp",
   },
 })
 
@@ -84,8 +88,7 @@ local config_modules = {
   "lsp",
   "treesitter",
   "conform",
-  "diagnostics",
-  "kimi",
+--  "diagnostics",
 }
 
 for _, module in ipairs(config_modules) do
@@ -361,6 +364,3 @@ end
 if vim.g.neovide then
     vim.g.neovide_cursor_animation_length = 0
 end
-
-
-

@@ -40,6 +40,9 @@ end
 require("mason").setup({})
 require("mason-lspconfig").setup({
   ensure_installed = { "eslint", "html", "cssls", "ts_ls" },
+  automatic_enable = {
+    exclude = { "jdtls" },
+  },
   handlers = {
     -- Дефолтный обработчик
     function(server_name)

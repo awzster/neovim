@@ -5,7 +5,19 @@ if not ok then
 end
 
 configs.setup({
-  ensure_installed = { "javascript", "typescript", "tsx", "html", "css", "json", "lua", "markdown", "markdown_inline" },
+ensure_installed = {
+  "javascript",
+  "typescript",
+  "tsx",
+  "html",
+  "css",
+  "json",
+  "lua",
+  "markdown",
+  "markdown_inline",
+  "java",
+},
+--[[   ensure_installed = { "javascript", "typescript", "tsx", "html", "css", "json", "lua", "markdown", "markdown_inline" }, ]]
   
   highlight = { 
     enable = true,
